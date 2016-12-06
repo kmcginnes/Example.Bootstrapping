@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Bootstrapping", "src\Example.Bootstrapping\Example.Bootstrapping.csproj", "{4DC7AEC8-A938-4BD3-B8CF-3C061177725A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Bootstrapping.Console", "src\Example.Bootstrapping.Console\Example.Bootstrapping.Console.csproj", "{09427FFC-10C9-41D1-AE14-F2EF20BBB794}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{92D9D3AD-22E0-44C8-B247-D3A771D9D706}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4DC7AEC8-A938-4BD3-B8CF-3C061177725A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DC7AEC8-A938-4BD3-B8CF-3C061177725A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DC7AEC8-A938-4BD3-B8CF-3C061177725A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DC7AEC8-A938-4BD3-B8CF-3C061177725A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09427FFC-10C9-41D1-AE14-F2EF20BBB794}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09427FFC-10C9-41D1-AE14-F2EF20BBB794}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09427FFC-10C9-41D1-AE14-F2EF20BBB794}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09427FFC-10C9-41D1-AE14-F2EF20BBB794}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
