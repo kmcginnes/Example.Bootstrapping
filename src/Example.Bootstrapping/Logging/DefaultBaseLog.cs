@@ -10,7 +10,7 @@ namespace Example.Bootstrapping
 
         protected string FormatMessage(string level, string message, Exception exception = null)
         {
-            var timestamp = DateTime.Now.ToLongTimeString();
+            var timestamp = DateTime.Now.ToString("hh:mm:ss.fff tt");
             var threadName = Thread.CurrentThread.Name;
             if (String.IsNullOrEmpty(threadName))
                 threadName = Thread.CurrentThread.ManagedThreadId.ToString();

@@ -8,17 +8,20 @@ namespace Example.Bootstrapping.Console
         {
             var app = new Bootstrapper();
 
-            try
+            app.Start(args).Wait(TimeSpan.FromMinutes(2));
+            
+            // These would be from an IoC container
+            var services = new Func<ILongRunningService>[]
             {
-                app.Start(args).Wait(TimeSpan.FromMinutes(2));
+                () => new MisbehavingService(),
+                () => new SomeLongRunningService(),
+            };
 
-                System.Console.ReadKey();
-            }
-            catch (Exception exception)
-            {
-                typeof(Program).Name.Log().Fatal(exception, "Failed to startup application");
-                throw;
-            }
+            var orchestrator = new LongRunningServiceOrchestrator(services);
+            orchestrator.StartLongRunningServices().Wait();
+
+            typeof(Program).Name.Log().Info("Listening for key press...");
+            System.Console.ReadKey();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Example.Bootstrapping.Console
+﻿namespace Example.Bootstrapping
 {
     public class AppSettings
     {

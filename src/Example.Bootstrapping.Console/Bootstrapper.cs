@@ -1,13 +1,6 @@
-﻿using System;
-using System.Configuration;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Sockets;
+﻿using System.Configuration;
 using System.Reflection;
-using System.Security.Principal;
-using System.Threading;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Example.Bootstrapping.Console
@@ -16,75 +9,39 @@ namespace Example.Bootstrapping.Console
     {
         public Task Start(string[] commandLineArgs)
         {
-            InitializeLogging();
+            var banner = new StringBuilder();
+            banner.AppendLine(@" ______               __          __                                     ");
+            banner.AppendLine(@"|   __ \.-----.-----.|  |_.-----.|  |_.----.---.-.-----.-----.-----.----.");
+            banner.AppendLine(@"|   __ <|  _  |  _  ||   _|__ --||   _|   _|  _  |  _  |  _  |  -__|   _|");
+            banner.AppendLine(@"|______/|_____|_____||____|_____||____|__| |___._|   __|   __|_____|__|  ");
+            banner.AppendLine(@"                                                 |__|  |__|              ");
+            banner.AppendLine(@"    ");
+            var logging = new LoggingOrchestrator("Main", banner.ToString());
+            logging.InitializeLogging();
+            this.Log().Debug("Logging initialized");
+
+            this.Log().Debug("Wiring up global exception handlers...");
             GlobalExceptionHandlers.WireUp();
 
-            var appContext = CreateAppContext();
-            LogUsefulInformation(appContext);
+            this.Log().Debug("Gathering system information for AppContext...");
+            var appContext = AppContextService.GatherAppContext("bootstrapping-console", "Example Bootstrapping Console App", Assembly.GetExecutingAssembly());
+            logging.LogUsefulInformation(appContext);
 
+            this.Log().Debug("Parsing command line and app settings...");
             var appSettings = ConfigurationParser.Parse(commandLineArgs, ConfigurationManager.AppSettings);
 
             ConfigurationParser.LogSettings(appSettings);
 
+            this.Log().Debug("Initializing the IoC container...");
             var container = InitializeContainer(appSettings);
-            
+
+            this.Log().Debug($"Finished bootstrapping {appContext.AppId}");
             return Task.FromResult(true);
         }
         
-        private IContainer InitializeContainer(AppSettings appSettings)
+        private IDependencyContainer InitializeContainer(AppSettings appSettings)
         {
-            return (IContainer) null;
-        }
-
-        private void LogUsefulInformation(IAppContext appContext)
-        {
-            this.Log().Info($"Starting {appContext.AppId} v{appContext.AssemblyVersion}");
-
-            var ipAddress =
-                Dns.GetHostEntry(Dns.GetHostName())
-                    .AddressList.FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork);
-            var windowsVersion = $"{Environment.OSVersion} {(Environment.Is64BitOperatingSystem ? "64bit" : "32bit")}";
-
-            this.Log().Info($"Assembly location: {appContext.AssemblyLocation}");
-            this.Log().Info($" Assembly version: {appContext.AssemblyVersion}");
-            this.Log().Info($"     File version: {appContext.AssemblyFileVersion}");
-            this.Log().Info($"       Running as: {appContext.PrincipalName}");
-            this.Log().Info($"     Network Host: {appContext.HostName} ({ipAddress})");
-            this.Log().Info($"  Windows Version: {windowsVersion}");
-        }
-
-        private void InitializeLogging()
-        {
-            // Set the main thread's name to make it clear in the logs.
-            if (Thread.CurrentThread.Name != "Main")
-                Thread.CurrentThread.Name = "Main";
-
-            // Sets my logger to the console, which goes to the debug output.
-            Log.InitializeWith<ConsoleLog>();
-
-            // Show a banner to easily pick out where new instances start
-            // in the log file. Plus it just looks cool.
-            this.Log().Info(@" ______               __          __                                     ");
-            this.Log().Info(@"|   __ \.-----.-----.|  |_.-----.|  |_.----.---.-.-----.-----.-----.----.");
-            this.Log().Info(@"|   __ <|  _  |  _  ||   _|__ --||   _|   _|  _  |  _  |  _  |  -__|   _|");
-            this.Log().Info(@"|______/|_____|_____||____|_____||____|__| |___._|   __|   __|_____|__|  ");
-            this.Log().Info(@"                                                 |__|  |__|              ");
-            this.Log().Info(@"    ");
-        }
-
-        private static IAppContext CreateAppContext()
-        {
-            var codeBase = Assembly.GetExecutingAssembly().CodeBase;
-            var uri = new UriBuilder(codeBase);
-            var path = Uri.UnescapeDataString(uri.Path);
-            var assemblyLocation = Path.GetDirectoryName(path);
-
-            var assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
-            var fileVersion = new Version(FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion);
-            var principal = WindowsIdentity.GetCurrent().Name ?? "[Unknown]";
-            var hostName = Environment.MachineName;
-
-            return new ExampleBootstrappingAppContext(hostName, String.Empty, principal, assemblyLocation, assemblyVersion, fileVersion);
+            return (IDependencyContainer) null;
         }
     }
 }
