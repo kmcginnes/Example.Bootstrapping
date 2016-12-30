@@ -14,6 +14,13 @@ namespace Example.Bootstrapping
                 return x;
             });
         }
+        public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
+        {
+            foreach (var item in source)
+            {
+                action(item);
+            }
+        }
 
         public static IEnumerable<T> ToEnumerable<T>(this T instance)
         {

@@ -18,25 +18,21 @@ namespace Example.Bootstrapping.TopShelf
             banner.AppendLine(@"|______/|_____|_____||____|_____||____|__| |___._|   __|   __|_____|__|  ");
             banner.AppendLine(@"                                                 |__|  |__|              ");
             banner.AppendLine(@"    ");
-
-            var logging = new LoggingOrchestrator("Main", banner.ToString());
-            logging.InitializeLogging();
-            this.Log().Debug("Logging initialized");
-
-            this.Log().Debug("Wiring up global exception handlers...");
+            var logging = new LoggingOrchestrator();
+            logging.InitializeLogging("Main", banner.ToString());
+            
             GlobalExceptionHandlers.WireUp();
 
-            this.Log().Debug("Gathering system information for AppContext...");
-            var appContext = AppContextService.GatherAppContext("bootstrapping-topshelf", "Example Bootstrapping TopShelf App", Assembly.GetExecutingAssembly());
-            logging.LogUsefulInformation(appContext);
+            const string appId = "bootstrapping-topshelf";
+            var environment = new EnvironmentFacade(Assembly.GetExecutingAssembly());
 
-            this.Log().Debug("Parsing command line and app settings...");
             var appSettings = ConfigurationParser.Parse(commandLineArgs, ConfigurationManager.AppSettings);
-
-            ConfigurationParser.LogSettings(appSettings);
+            logging.LogUsefulInformation(environment, appSettings, appId);
 
             this.Log().Debug("Initializing the IoC container...");
             var container = InitializeContainer(appSettings);
+
+            this.Log().Debug($"Finished bootstrapping {appId}");
 
             // These would be from an IoC container
             var services = new Func<ILongRunningService>[]

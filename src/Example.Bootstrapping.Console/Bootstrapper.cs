@@ -16,26 +16,21 @@ namespace Example.Bootstrapping.Console
             banner.AppendLine(@"|______/|_____|_____||____|_____||____|__| |___._|   __|   __|_____|__|  ");
             banner.AppendLine(@"                                                 |__|  |__|              ");
             banner.AppendLine(@"    ");
-            var logging = new LoggingOrchestrator("Main", banner.ToString());
-            logging.InitializeLogging();
-            this.Log().Debug("Logging initialized");
+            var logging = new LoggingOrchestrator();
+            logging.InitializeLogging("Main", banner.ToString());
 
-            this.Log().Debug("Wiring up global exception handlers...");
             GlobalExceptionHandlers.WireUp();
 
-            this.Log().Debug("Gathering system information for AppContext...");
-            var appContext = AppContextService.GatherAppContext("bootstrapping-console", "Example Bootstrapping Console App", Assembly.GetExecutingAssembly());
-            logging.LogUsefulInformation(appContext);
+            const string appId = "bootstrapping-console";
+            var environment = new EnvironmentFacade(Assembly.GetExecutingAssembly());
 
-            this.Log().Debug("Parsing command line and app settings...");
             var appSettings = ConfigurationParser.Parse(commandLineArgs, ConfigurationManager.AppSettings);
-
-            ConfigurationParser.LogSettings(appSettings);
+            logging.LogUsefulInformation(environment, appSettings, appId);
 
             this.Log().Debug("Initializing the IoC container...");
             var container = InitializeContainer(appSettings);
 
-            this.Log().Debug($"Finished bootstrapping {appContext.AppId}");
+            this.Log().Debug($"Finished bootstrapping {appId}");
             return Task.FromResult(true);
         }
         

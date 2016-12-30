@@ -1,7 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
@@ -9,20 +8,11 @@ namespace Example.Bootstrapping
 {
     public class LoggingOrchestrator
     {
-        private readonly string _banner;
-        private readonly string _mainThreadName;
-
-        public LoggingOrchestrator(string mainThreadName, string banner)
-        {
-            _banner = banner;
-            _mainThreadName = mainThreadName;
-        }
-
-        public void InitializeLogging()
+        public void InitializeLogging(string mainThreadName, string banner)
         {
             // Set the main thread's name to make it clear in the logs.
-            if (Thread.CurrentThread.Name != _mainThreadName)
-                Thread.CurrentThread.Name = _mainThreadName;
+            if (Thread.CurrentThread.Name != mainThreadName)
+                Thread.CurrentThread.Name = mainThreadName;
 
             Console.OutputEncoding = Encoding.UTF8;
 
@@ -31,27 +21,54 @@ namespace Example.Bootstrapping
 
             // Show a banner to easily pick out where new instances start
             // in the log file. Plus it just looks cool.
-            _banner.Split(new[] {Environment.NewLine}, StringSplitOptions.None)
+            banner.Split(new[] {Environment.NewLine}, StringSplitOptions.None)
                 .Do(x => this.Log().Info(x))
                 .ToList();
+            this.Log().Info("");
+
+            this.Log().Debug("Logging initialized.");
         }
 
-        public void LogUsefulInformation(IAppContext appContext)
+        public void LogUsefulInformation(IEnvironmentFacade environment, AppSettings appSettings, string appId)
         {
             this.Log().Info("");
-            this.Log().Info($"Starting {appContext.AppId} v{appContext.AssemblyVersion}");
+            this.Log().Debug("Gathering system information...");
+            var assemblyLocation = environment.GetAssemblyLocation();
+            var assemblyVersion = environment.GetAssemblyVersion();
+            var fileVersion = environment.GetAssemblyFileVersion();
+            var principalName = environment.GetPrincipalName();
+            var hostName = environment.GetHostName();
+            var ipAddress = environment.GetCurrentIpV4Address();
+            var instanceName = environment.GetServiceInstanceName();
+            var windowsVersion = environment.GetWindowsVersionName();
 
-            var ipAddress =
-                Dns.GetHostEntry(Dns.GetHostName())
-                    .AddressList.FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork);
-            var windowsVersion = $"{Environment.OSVersion} {(Environment.Is64BitOperatingSystem ? "64bit" : "32bit")}";
-            
-            this.Log().Info($"Assembly location: {appContext.AssemblyLocation}");
-            this.Log().Info($" Assembly version: {appContext.AssemblyVersion}");
-            this.Log().Info($"     File version: {appContext.AssemblyFileVersion}");
-            this.Log().Info($"       Running as: {appContext.PrincipalName}");
-            this.Log().Info($"     Network Host: {appContext.HostName} ({ipAddress})");
-            this.Log().Info($"  Windows Version: {windowsVersion}");
+            var productVersion = new Version(fileVersion.Major, fileVersion.Minor, fileVersion.Build, 0);
+
+
+            this.Log().Info($"Starting {appId} v{productVersion}");
+
+            var keyValues = new Dictionary<string, string>
+            {
+                ["Assembly location"] = assemblyLocation,
+                ["Assembly version"] = assemblyVersion.ToString(),
+                ["File version"] = fileVersion.ToString(),
+                ["Product version"] = productVersion.ToString(),
+                ["Running as"] = principalName,
+                ["Network Host"] = $"{hostName} ({ipAddress})",
+                ["Windows Version"] = windowsVersion,
+                ["Configuration"] = "=====================",
+            };
+
+            appSettings.GetType().GetProperties()
+                .ForEach(x => keyValues.Add(x.Name, x.GetValue(appSettings)?.ToString() ?? "[NULL]"));
+
+            var longestKey = keyValues.Keys.Max(x => x.Length);
+
+            this.Log().Info("");
+            foreach (var keyValue in keyValues)
+            {
+                this.Log().Info($"{keyValue.Key.PadLeft(longestKey)}: {keyValue.Value}");
+            }
             this.Log().Info("");
         }
     }

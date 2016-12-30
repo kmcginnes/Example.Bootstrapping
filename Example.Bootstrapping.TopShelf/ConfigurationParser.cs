@@ -10,6 +10,7 @@ namespace Example.Bootstrapping.TopShelf
 
         public static AppSettings Parse(string[] commandLineArgs, NameValueCollection appSettings)
         {
+            Logger.Debug("Parsing command line and app settings...");
             var dataDirectory = GetDataDirectory(appSettings);
             var defaultVolume = GetDefaultVolume(appSettings);
 

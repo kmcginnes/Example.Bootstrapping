@@ -22,12 +22,6 @@ namespace Example.Bootstrapping.Console
             return settings;
         }
 
-        public static void LogSettings(AppSettings settings)
-        {
-            Logger.Info($"        DataDirectory = {settings.DataDirectory}");
-            Logger.Info($"DefaultPlaybackVolume = {settings.DefaultVolume}%");
-        }
-
         public static string GetDataDirectory(NameValueCollection appSettings)
         {
             var defaultPath = @"C:\Temp\";
