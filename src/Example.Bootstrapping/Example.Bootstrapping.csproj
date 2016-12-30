@@ -43,7 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppSettings.cs" />
-    <Compile Include="AppContext.cs" />
     <Compile Include="EnvironmentFacade.cs" />
     <Compile Include="IConsoleCommandProcessor.cs" />
     <Compile Include="LoggingOrchestrator.cs" />
