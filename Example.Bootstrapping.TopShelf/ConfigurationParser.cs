@@ -2,7 +2,7 @@
 using System.Collections.Specialized;
 using System.IO;
 
-namespace Example.Bootstrapping.Console
+namespace Example.Bootstrapping.TopShelf
 {
     public static class ConfigurationParser
     {
