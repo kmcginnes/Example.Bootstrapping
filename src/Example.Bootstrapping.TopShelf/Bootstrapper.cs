@@ -4,6 +4,13 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Castle.MicroKernel;
+using Castle.MicroKernel.ModelBuilder.Inspectors;
+using Castle.MicroKernel.Registration;
+using Castle.MicroKernel.Resolvers;
+using Castle.Windsor;
+using Castle.Windsor.Installer;
+using Castle.Windsor.Proxy;
 
 namespace Example.Bootstrapping.TopShelf
 {
@@ -32,27 +39,21 @@ namespace Example.Bootstrapping.TopShelf
             this.Log().Debug("Initializing the IoC container...");
             var container = InitializeContainer(appSettings);
 
-            this.Log().Debug($"Finished bootstrapping {appId}");
+            this.Log().Debug($"Finished bootstrapping {appId}.");
 
-            // These would be from an IoC container
-            var services = new Func<ILongRunningService>[]
-            {
-                () => new MisbehavingService(),
-                () => new SomeLongRunningService(),
-            };
-
-            var orchestrator = new LongRunningServiceOrchestrator(services);
+            // Kick off long running services
+            var orchestrator = container.Resolve<LongRunningServiceOrchestrator>();
             orchestrator.StartLongRunningServices().Wait();
 
-            var commandProcessors = new IConsoleCommandProcessor[]
-            {
-                new QuitConsoleCommandProcessor(), new SweepKickoffConsoleCommandProcessor(),
-            };
+            this.Log().Info($"All long running services are started.");
 
             if (Environment.UserInteractive)
             {
                 Task.Run(async () =>
                 {
+                    this.Log().Info($"Interactive console mode detected.");
+                    var commandProcessors = container.ResolveAll<IConsoleCommandProcessor>();
+
                     await Task.Delay(TimeSpan.FromMilliseconds(200));
                     while (true)
                     {
@@ -84,9 +85,31 @@ namespace Example.Bootstrapping.TopShelf
             }
         }
 
-        private IDependencyContainer InitializeContainer(AppSettings appSettings)
+        private IWindsorContainer InitializeContainer(IAppSettings appSettings)
         {
-            return (IDependencyContainer)null;
+            // Basic Castle Windsor setup that all apps should use.
+            var container = new WindsorContainer(
+                new DefaultKernel(
+                    new ArgumentPassingDependencyResolver(), // overrides for inline argument passing
+                    new DefaultProxyFactory()),
+                new DefaultComponentInstaller());
+
+            // Turn off automatic property injection
+            container.Kernel.ComponentModelBuilder.RemoveContributor(
+                container.Kernel.ComponentModelBuilder
+                    .Contributors.OfType<PropertiesDependenciesModelInspector>().Single()
+            );
+
+            // Allow Lazy<T> of any services
+            container.Register(Component.For<ILazyComponentLoader>().ImplementedBy<LazyOfTComponentLoader>());
+
+            // Bootstrapper registrations
+            container.Register(Component.For<IAppSettings>().Instance(appSettings));
+
+            // Register all custom installers
+            container.Install(FromAssembly.InThisApplication());
+
+            return container;
         }
 
         public void Stop()
