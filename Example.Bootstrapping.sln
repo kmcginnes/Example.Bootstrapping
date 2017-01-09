@@ -12,7 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Bootstrapping.TopShelf", "Example.Bootstrapping.TopShelf\Example.Bootstrapping.TopShelf.csproj", "{67527104-299A-47CF-9428-5AD9DBCEFAD9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Bootstrapping.TopShelf", "src\Example.Bootstrapping.TopShelf\Example.Bootstrapping.TopShelf.csproj", "{67527104-299A-47CF-9428-5AD9DBCEFAD9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
