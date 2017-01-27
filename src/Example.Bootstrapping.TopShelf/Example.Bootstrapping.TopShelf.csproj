@@ -64,9 +64,8 @@
     <Compile Include="AppInstaller.cs" />
     <Compile Include="CastleWindsor\ArgumentPassingDependencyResolver.cs" />
     <Compile Include="ConfigurationParser.cs" />
-    <Compile Include="ConsoleCommandOrchestrator.cs" />
     <Compile Include="CastleWindsor\ContravariantFilter.cs" />
-    <Compile Include="DatabaseContext.cs" />
+    <Compile Include="ConsoleCommandOrchestrator.cs" />
     <Compile Include="FindJobs\FindJobs.cs" />
     <Compile Include="FindJobs\FindJobsConsoleCommandProcessor.cs" />
     <Compile Include="FindJobs\FindJobsHandler.cs" />

@@ -1,6 +1,6 @@
 using System;
 
-namespace Example.Bootstrapping.TopShelf
+namespace Example.Bootstrapping
 {
     public class DatabaseContext : IDisposable
     {
