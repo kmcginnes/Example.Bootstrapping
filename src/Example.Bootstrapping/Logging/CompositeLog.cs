@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 
+// ReSharper disable once CheckNamespace
 namespace Example.Bootstrapping
 {
     public abstract class CompositeLog<TLogger> : ILog, ILog<TLogger>
     {
-        readonly List<ILog> _loggers;
+        private readonly List<ILog> _loggers;
 
         protected CompositeLog(params ILog[] loggers)
         {
@@ -17,17 +18,7 @@ namespace Example.Bootstrapping
         {
             _loggers.ForEach(x => x.InitializeFor(loggerName));
         }
-
-        //public void Trace(string message, params object[] formatting)
-        //{
-        //    _loggers.ForEach(x => x.Trace(message, formatting));
-        //}
-
-        //public void Trace(Func<string> message)
-        //{
-        //    _loggers.ForEach(x => x.Trace(message));
-        //}
-
+        
         public void Debug(string message, params object[] formatting)
         {
             _loggers.ForEach(x => x.Debug(message, formatting));
