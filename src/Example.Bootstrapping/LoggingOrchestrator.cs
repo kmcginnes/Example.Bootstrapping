@@ -6,6 +6,14 @@ using System.Threading;
 
 namespace Example.Bootstrapping
 {
+    public class ConsoleAndFileLogger : CompositeLog<ConsoleAndFileLogger>
+    {
+        public ConsoleAndFileLogger() : base(new ConsoleLog(), new FileLog())
+        {
+            
+        }
+    }
+
     public class LoggingOrchestrator
     {
         public void InitializeLogging(string mainThreadName, string banner)
@@ -17,7 +25,7 @@ namespace Example.Bootstrapping
             Console.OutputEncoding = Encoding.UTF8;
 
             // Sets my logger to the console, which goes to the debug output.
-            Log.InitializeWith<ConsoleLog>();
+            Log.InitializeWith<ConsoleAndFileLogger>();
 
             // Show a banner to easily pick out where new instances start
             // in the log file. Plus it just looks cool.

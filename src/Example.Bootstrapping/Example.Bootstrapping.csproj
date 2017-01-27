@@ -50,8 +50,10 @@
     <Compile Include="GlobalExceptionHandlers.cs" />
     <Compile Include="IDependencyContainer.cs" />
     <Compile Include="ILongRunningService.cs" />
+    <Compile Include="Logging\CompositeLog.cs" />
     <Compile Include="Logging\ConsoleLog.cs" />
     <Compile Include="Logging\DefaultBaseLog.cs" />
+    <Compile Include="Logging\FileLog.cs" />
     <Compile Include="Logging\ILog.cs" />
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Logging\LogExtensions.cs" />
