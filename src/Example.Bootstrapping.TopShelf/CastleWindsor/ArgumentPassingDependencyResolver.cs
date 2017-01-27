@@ -2,7 +2,7 @@
 using Castle.MicroKernel.Context;
 using Castle.MicroKernel.Resolvers;
 
-namespace Example.Bootstrapping.TopShelf
+namespace Example.Bootstrapping.TopShelf.CastleWindsor
 {
     /// <summary>
     /// Passes inline arguments down the chain

@@ -12,6 +12,7 @@ using Castle.MicroKernel.Resolvers.SpecializedResolvers;
 using Castle.Windsor;
 using Castle.Windsor.Installer;
 using Castle.Windsor.Proxy;
+using Example.Bootstrapping.TopShelf.CastleWindsor;
 
 namespace Example.Bootstrapping.TopShelf
 {

@@ -58,7 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppInstaller.cs" />
-    <Compile Include="ArgumentPassingDependencyResolver.cs" />
+    <Compile Include="CastleWindsor\ArgumentPassingDependencyResolver.cs" />
     <Compile Include="ConfigurationParser.cs" />
     <Compile Include="ConsoleCommandOrchestrator.cs" />
     <Compile Include="Program.cs" />

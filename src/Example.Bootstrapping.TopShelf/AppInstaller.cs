@@ -6,6 +6,7 @@ using Castle.MicroKernel.Context;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
+using Example.Bootstrapping.TopShelf.CastleWindsor;
 
 namespace Example.Bootstrapping.TopShelf
 {
