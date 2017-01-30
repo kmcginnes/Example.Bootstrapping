@@ -7,23 +7,26 @@ namespace Example.Bootstrapping.Console
 {
     internal class ScopedMediator : IMediator
     {
+        private readonly SingleInstanceFactory _singleInstanceFactory;
+        private readonly MultiInstanceFactory _multiInstanceFactory;
         private readonly Func<IDisposable> _beginLifetimeScope;
-        private readonly Mediator _mediator;
 
         public ScopedMediator(
             SingleInstanceFactory singleInstanceFactory, 
             MultiInstanceFactory multiInstanceFactory, 
             Func<IDisposable> beginLifetimeScope)
         {
+            _singleInstanceFactory = singleInstanceFactory;
+            _multiInstanceFactory = multiInstanceFactory;
             _beginLifetimeScope = beginLifetimeScope;
-            _mediator = new Mediator(singleInstanceFactory, multiInstanceFactory);
         }
 
         public Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = new CancellationToken())
         {
             using (_beginLifetimeScope())
             {
-                return _mediator.Send(request, cancellationToken);
+                var mediator = new Mediator(_singleInstanceFactory, _multiInstanceFactory);
+                return mediator.Send(request, cancellationToken);
             }
         }
 
@@ -31,7 +34,8 @@ namespace Example.Bootstrapping.Console
         {
             using (_beginLifetimeScope())
             {
-                return _mediator.Send(request, cancellationToken);
+                var mediator = new Mediator(_singleInstanceFactory, _multiInstanceFactory);
+                return mediator.Send(request, cancellationToken);
             }
         }
 
@@ -39,7 +43,8 @@ namespace Example.Bootstrapping.Console
         {
             using (_beginLifetimeScope())
             {
-                return _mediator.Publish(notification, cancellationToken);
+                var mediator = new Mediator(_singleInstanceFactory, _multiInstanceFactory);
+                return mediator.Publish(notification, cancellationToken);
             }
         }
     }
