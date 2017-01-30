@@ -67,6 +67,7 @@ namespace Example.Bootstrapping.Console
 
             builder.Register(c => hackToRegisterContainer.Value);
 
+            builder.Register(ctx => (Func<ILifetimeScope>)(() => hackToRegisterContainer.Value.BeginLifetimeScope()));
             builder.RegisterType<ScopedMediator>().As<IMediator>();
 
             builder.RegisterAssemblyTypes(assemblies).AsClosedTypesOf(typeof(IAsyncRequestHandler<>)).InstancePerLifetimeScope();
