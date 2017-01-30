@@ -18,7 +18,7 @@ namespace Example.Bootstrapping
         public Task Initialize()
         {
             this.Log().Info($"Initializing {nameof(SomeLongRunningService)}");
-            _thread.Start(_tokenSource.Token);
+            //_thread.Start(_tokenSource.Token);
             this.Log().Info($"Finished initializing {nameof(SomeLongRunningService)}");
             return Task.FromResult(true);
         }
