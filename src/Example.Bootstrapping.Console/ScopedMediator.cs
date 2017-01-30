@@ -1,49 +1,49 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Autofac;
 using MediatR;
 
 namespace Example.Bootstrapping.Console
 {
     internal class ScopedMediator : IMediator
     {
-        private readonly SingleInstanceFactory _singleInstanceFactory;
-        private readonly MultiInstanceFactory _multiInstanceFactory;
-        private readonly Func<IDisposable> _beginLifetimeScope;
+        private readonly IContainer _kernel;
 
-        public ScopedMediator(
-            SingleInstanceFactory singleInstanceFactory, 
-            MultiInstanceFactory multiInstanceFactory, 
-            Func<IDisposable> beginLifetimeScope)
+        public ScopedMediator(IContainer kernel)
         {
-            _singleInstanceFactory = singleInstanceFactory;
-            _multiInstanceFactory = multiInstanceFactory;
-            _beginLifetimeScope = beginLifetimeScope;
+            _kernel = kernel;
         }
 
         public Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = new CancellationToken())
         {
-            using (_beginLifetimeScope())
+            using (var scope = _kernel.BeginLifetimeScope())
             {
-                var mediator = new Mediator(_singleInstanceFactory, _multiInstanceFactory);
+                var mediator = new Mediator(
+                    t => scope.Resolve(t),
+                    t => (IEnumerable<object>)scope.Resolve(typeof(IEnumerable<>).MakeGenericType(t)));
                 return mediator.Send(request, cancellationToken);
             }
         }
 
         public Task Send(IRequest request, CancellationToken cancellationToken = new CancellationToken())
         {
-            using (_beginLifetimeScope())
+            using (var scope = _kernel.BeginLifetimeScope())
             {
-                var mediator = new Mediator(_singleInstanceFactory, _multiInstanceFactory);
+                var mediator = new Mediator(
+                    t => scope.Resolve(t),
+                    t => (IEnumerable<object>)scope.Resolve(typeof(IEnumerable<>).MakeGenericType(t)));
                 return mediator.Send(request, cancellationToken);
             }
         }
 
         public Task Publish<TNotification>(TNotification notification, CancellationToken cancellationToken = new CancellationToken()) where TNotification : INotification
         {
-            using (_beginLifetimeScope())
+            using (var scope = _kernel.BeginLifetimeScope())
             {
-                var mediator = new Mediator(_singleInstanceFactory, _multiInstanceFactory);
+                var mediator = new Mediator(
+                    t => scope.Resolve(t),
+                    t => (IEnumerable<object>)scope.Resolve(typeof(IEnumerable<>).MakeGenericType(t)));
                 return mediator.Publish(notification, cancellationToken);
             }
         }

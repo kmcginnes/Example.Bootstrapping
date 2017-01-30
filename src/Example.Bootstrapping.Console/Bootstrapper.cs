@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Reflection;
 using System.Text;
@@ -68,13 +67,7 @@ namespace Example.Bootstrapping.Console
 
             builder.Register(c => hackToRegisterContainer.Value);
 
-            builder.Register(ctx =>
-            {
-                return new ScopedMediator(
-                    t => ctx.Resolve(t),
-                    t => (IEnumerable<object>)ctx.Resolve(typeof(IEnumerable<>).MakeGenericType(t)),
-                    () => hackToRegisterContainer.Value.BeginLifetimeScope());
-            });
+            builder.RegisterType<ScopedMediator>().As<IMediator>();
 
             builder.RegisterAssemblyTypes(assemblies).AsClosedTypesOf(typeof(IAsyncRequestHandler<>)).InstancePerLifetimeScope();
             builder.RegisterAssemblyTypes(assemblies).AsClosedTypesOf(typeof(IAsyncRequestHandler<,>)).InstancePerLifetimeScope();
