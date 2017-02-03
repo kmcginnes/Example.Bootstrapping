@@ -26,5 +26,31 @@ namespace Example.Bootstrapping
         {
             return new[] {instance};
         }
+
+        /// <summary>
+        /// Uses the provided string if source string is null or empty
+        /// </summary>
+        /// <param name="source">The string to test</param>
+        /// <param name="defaultValue">The string value to use if source is null or empty</param>
+        /// <returns></returns>
+        public static string IfNullOrEmpty(this string source, string defaultValue)
+        {
+            return String.IsNullOrEmpty(source)
+                ? defaultValue
+                : source;
+        }
+
+        /// <summary>
+        /// Uses the provided string if source string is null or whitespace
+        /// </summary>
+        /// <param name="source">The string to test</param>
+        /// <param name="defaultValue">The string value to use if source is null or whitespace</param>
+        /// <returns></returns>
+        public static string IfNullOrWhiteSpace(this string source, string defaultValue)
+        {
+            return String.IsNullOrWhiteSpace(source)
+                ? defaultValue
+                : source;
+        }
     }
 }

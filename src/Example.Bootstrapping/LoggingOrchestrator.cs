@@ -44,13 +44,13 @@ namespace Example.Bootstrapping
             var assemblyLocation = environment.GetAssemblyLocation();
             var assemblyVersion = environment.GetAssemblyVersion();
             var fileVersion = environment.GetAssemblyFileVersion();
+            var productVersion = environment.GetProductVersion();
             var principalName = environment.GetPrincipalName();
+            var culture = environment.GetCurrentCulture();
             var hostName = environment.GetHostName();
             var ipAddress = environment.GetCurrentIpV4Address();
-            var instanceName = environment.GetServiceInstanceName();
+            var instanceName = environment.GetServiceInstanceName().IfNullOrEmpty("[Running in console mode]");
             var windowsVersion = environment.GetWindowsVersionName();
-
-            var productVersion = new Version(fileVersion.Major, fileVersion.Minor, fileVersion.Build, 0);
 
 
             this.Log().Info($"Starting {appId} v{productVersion}");
@@ -58,12 +58,13 @@ namespace Example.Bootstrapping
             var keyValues = new Dictionary<string, string>
             {
                 ["Assembly location"] = assemblyLocation,
-                ["Assembly version"] = assemblyVersion.ToString(),
-                ["File version"] = fileVersion.ToString(),
-                ["Product version"] = productVersion.ToString(),
-                ["Running as"] = principalName,
-                ["Network Host"] = $"{hostName} ({ipAddress})",
-                ["Windows Version"] = windowsVersion,
+                ["Assembly version"] = assemblyVersion,
+                ["File version"] = fileVersion,
+                ["Product version"] = productVersion,
+                ["Instance name"] = instanceName,
+                ["Running as"] = $"{principalName} ({culture})",
+                ["Network host"] = $"{hostName} ({ipAddress})",
+                ["Windows version"] = windowsVersion,
                 ["Configuration"] = "=====================",
             };
 
