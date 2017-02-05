@@ -24,15 +24,14 @@ namespace Example.Bootstrapping.Console
 
             GlobalExceptionHandlers.WireUp();
 
-            const string appId = "bootstrapping-console";
             var environment = new EnvironmentFacade(Assembly.GetExecutingAssembly());
 
             var appSettings = ConfigurationParser.Parse(commandLineArgs, ConfigurationManager.AppSettings);
-            logging.LogUsefulInformation(environment, appSettings, appId);
+            logging.LogUsefulInformation(environment, appSettings);
 
             var container = InitializeContainer(appSettings);
 
-            this.Log().Debug($"Finished bootstrapping {appId}");
+            (this).Log().Debug($"Finished bootstrapping {environment.GetProductName()}");
 
             // Kick off long running services
             var orchestrator = container.Resolve<LongRunningServiceOrchestrator>();

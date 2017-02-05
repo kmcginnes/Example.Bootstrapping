@@ -27,19 +27,17 @@ namespace Example.Bootstrapping
             // Sets my logger to the console, which goes to the debug output.
             Log.InitializeWith<ConsoleAndFileLogger>();
 
+            this.Log().Debug("Logging initialized.");
+
             // Show a banner to easily pick out where new instances start
             // in the log file. Plus it just looks cool.
             banner.Split(new[] {Environment.NewLine}, StringSplitOptions.None)
                 .Do(x => this.Log().Info(x))
                 .ToList();
-            this.Log().Info("");
-
-            this.Log().Debug("Logging initialized.");
         }
 
-        public void LogUsefulInformation(IEnvironmentFacade environment, AppSettings appSettings, string appId)
+        public void LogUsefulInformation(IEnvironmentFacade environment, AppSettings appSettings)
         {
-            this.Log().Info("");
             this.Log().Debug("Gathering system information...");
             var assemblyLocation = environment.GetAssemblyLocation();
             var productName = environment.GetProductName();
@@ -52,9 +50,6 @@ namespace Example.Bootstrapping
             var ipAddress = environment.GetCurrentIpV4Address();
             var instanceName = environment.GetServiceInstanceName().IfNullOrEmpty("[Running in console mode]");
             var windowsVersion = environment.GetWindowsVersionName();
-
-
-            this.Log().Info($"Starting {productName} v{productVersion}");
 
             var keyValues = new Dictionary<string, string>
             {
@@ -79,6 +74,8 @@ namespace Example.Bootstrapping
             {
                 this.Log().Info($"{keyValue.Key.PadLeft(longestKey)}: {keyValue.Value}");
             }
+            this.Log().Info("");
+            this.Log().Info($"Starting {productName} v{productVersion}");
             this.Log().Info("");
         }
     }

@@ -34,16 +34,15 @@ namespace Example.Bootstrapping.TopShelf
             
             GlobalExceptionHandlers.WireUp();
 
-            const string appId = "bootstrapping-topshelf";
             var environment = new EnvironmentFacade(Assembly.GetExecutingAssembly());
 
             var appSettings = ConfigurationParser.Parse(commandLineArgs, ConfigurationManager.AppSettings);
-            logging.LogUsefulInformation(environment, appSettings, appId);
+            logging.LogUsefulInformation(environment, appSettings);
 
             var container = InitializeContainer(appSettings);
             _disposableBag.Add(container);
 
-            this.Log().Debug($"Finished bootstrapping {appId}.");
+            this.Log().Debug($"Finished bootstrapping {environment.GetProductName()}.");
 
             // Kick off long running services
             var orchestrator = container.Resolve<LongRunningServiceOrchestrator>();
