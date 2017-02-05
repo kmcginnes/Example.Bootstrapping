@@ -94,6 +94,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="MaterialDesignThemes">
+      <Version>2.2.1.750</Version>
+    </PackageReference>
     <PackageReference Include="MediatR">
       <Version>3.0.0</Version>
     </PackageReference>
