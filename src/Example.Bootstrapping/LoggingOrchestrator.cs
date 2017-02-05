@@ -42,6 +42,7 @@ namespace Example.Bootstrapping
             this.Log().Info("");
             this.Log().Debug("Gathering system information...");
             var assemblyLocation = environment.GetAssemblyLocation();
+            var productName = environment.GetProductName();
             var assemblyVersion = environment.GetAssemblyVersion();
             var fileVersion = environment.GetAssemblyFileVersion();
             var productVersion = environment.GetProductVersion();
@@ -53,7 +54,7 @@ namespace Example.Bootstrapping
             var windowsVersion = environment.GetWindowsVersionName();
 
 
-            this.Log().Info($"Starting {appId} v{productVersion}");
+            this.Log().Info($"Starting {productName} v{productVersion}");
 
             var keyValues = new Dictionary<string, string>
             {
