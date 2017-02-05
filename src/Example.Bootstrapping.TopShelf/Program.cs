@@ -14,6 +14,7 @@ namespace Example.Bootstrapping.TopShelf
                     s.WhenStarted(x => x.Start(args));
                     s.WhenStopped(x => x.Stop());
                 });
+                cfg.OnException(ex => GlobalExceptionHandlers.OnException(ex, "Windows service"));
                 cfg.SetServiceName("bootstrapping-topshelf");
                 cfg.SetDescription("Example Bootstrapping TopShelf App");
             });
