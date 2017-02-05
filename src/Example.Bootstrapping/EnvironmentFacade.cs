@@ -6,7 +6,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
+using System.Text;
 using System.Threading;
 
 namespace Example.Bootstrapping
@@ -14,15 +16,16 @@ namespace Example.Bootstrapping
     public interface IEnvironmentFacade
     {
         string GetAssemblyLocation();
+        string GetProductName();
         string GetAssemblyVersion();
         string GetAssemblyFileVersion();
         string GetProductVersion();
         string GetServiceInstanceName();
         string GetPrincipalName();
+        string GetCurrentCulture();
         string GetHostName();
         string GetWindowsVersionName();
         IPAddress GetCurrentIpV4Address();
-        string GetCurrentCulture();
     }
 
     public class EnvironmentFacade : IEnvironmentFacade
@@ -40,11 +43,34 @@ namespace Example.Bootstrapping
         {
             return (string)_cache.GetOrAdd("assembly-location", key =>
             {
-                var codeBase = _applicationAssembly.CodeBase;
-                var uri = new UriBuilder(codeBase);
-                var path = Uri.UnescapeDataString(uri.Path);
-                var assemblyLocation = Path.GetDirectoryName(path);
+                StringBuilder sb = UnsafeNativeMethods.GetModuleFileNameLongPath(UnsafeNativeMethods.NullHandleRef);
+                var assemblyLocation = Path.GetDirectoryName(sb.ToString());
                 return assemblyLocation;
+            });
+        }
+
+        public string GetProductName()
+        {
+            return (string) _cache.GetOrAdd("product-name", key =>
+            {
+                string productName = null;
+
+                // custom attribute
+                //
+                var attrs = _applicationAssembly.GetCustomAttributes(typeof(AssemblyProductAttribute), false);
+                if (attrs.Length > 0)
+                {
+                    productName = ((AssemblyProductAttribute)attrs[0]).Product;
+                }
+
+                // win32 version info
+                //
+                if (String.IsNullOrEmpty(productName))
+                {
+                    productName = GetAppFileVersionInfo().ProductName;
+                    productName = productName?.Trim();
+                }
+                return productName;
             });
         }
 
@@ -61,7 +87,7 @@ namespace Example.Bootstrapping
         {
             return (string) _cache.GetOrAdd("assembly-file-version", key =>
             {
-                var fileVersion = FileVersionInfo.GetVersionInfo(_applicationAssembly.Location).FileVersion;
+                var fileVersion = GetAppFileVersionInfo().FileVersion;
                 return fileVersion;
             });
         }
@@ -70,7 +96,17 @@ namespace Example.Bootstrapping
         {
             return (string) _cache.GetOrAdd("product-version", key =>
             {
-                var productVersion = FileVersionInfo.GetVersionInfo(_applicationAssembly.Location).ProductVersion;
+                var attrs = _applicationAssembly.GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false);
+                var productVersion = attrs.Length > 0
+                    ? ((AssemblyInformationalVersionAttribute) attrs[0]).InformationalVersion
+                    : String.Empty;
+                
+                if (String.IsNullOrEmpty(productVersion))
+                {
+                    productVersion = GetAppFileVersionInfo().ProductVersion;
+                    productVersion = productVersion?.Trim() ?? String.Empty;
+                }
+
                 return productVersion;
             });
         }
@@ -135,6 +171,37 @@ namespace Example.Bootstrapping
                 Dns.GetHostEntry(Dns.GetHostName())
                     .AddressList.FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork);
             return ipAddress;
+        }
+
+        // ** Helpers ** 
+
+        private FileVersionInfo GetAppFileVersionInfo()
+        {
+            var appFileVersion = FileVersionInfo.GetVersionInfo(_applicationAssembly.Location);
+            return appFileVersion;
+        }
+
+        private static class UnsafeNativeMethods
+        {
+            public static readonly HandleRef NullHandleRef = new HandleRef((object)null, IntPtr.Zero);
+
+            [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+            private static extern int GetModuleFileName(HandleRef hModule, StringBuilder buffer, int length);
+
+            public static StringBuilder GetModuleFileNameLongPath(HandleRef hModule)
+            {
+                StringBuilder buffer = new StringBuilder(260);
+                int num = 1;
+                int moduleFileName;
+                while ((moduleFileName = GetModuleFileName(hModule, buffer, buffer.Capacity)) == buffer.Capacity && Marshal.GetLastWin32Error() == 122 && buffer.Capacity < (int)short.MaxValue)
+                {
+                    num += 2;
+                    int capacity = num * 260 < (int)short.MaxValue ? num * 260 : (int)short.MaxValue;
+                    buffer.EnsureCapacity(capacity);
+                }
+                buffer.Length = moduleFileName;
+                return buffer;
+            }
         }
     }
 }
