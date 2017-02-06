@@ -117,7 +117,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\Example.Bootstrapping\Example.Bootstrapping.csproj">
+    <ProjectReference Include="..\Example.Bootstrapping\Example.Bootstrapping.csproj">
       <Project>{4dc7aec8-a938-4bd3-b8cf-3c061177725a}</Project>
       <Name>Example.Bootstrapping</Name>
     </ProjectReference>
