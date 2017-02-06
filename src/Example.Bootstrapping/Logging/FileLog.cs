@@ -20,8 +20,10 @@ namespace Example.Bootstrapping
         {
             var directory = Path.GetDirectoryName(_logFilePath) ?? String.Empty;
 
-            if (!String.IsNullOrWhiteSpace(directory) || !Directory.Exists(directory))
+            if (!String.IsNullOrWhiteSpace(directory) && !Directory.Exists(directory))
+            {
                 Directory.CreateDirectory(directory);
+            }
         }
 
         protected virtual void WriteLineToFile(string formattedMessage)
