@@ -21,9 +21,7 @@ namespace Example.Bootstrapping
             // Set the main thread's name to make it clear in the logs.
             if (Thread.CurrentThread.Name != mainThreadName)
                 Thread.CurrentThread.Name = mainThreadName;
-
-            Console.OutputEncoding = Encoding.UTF8;
-
+            
             // Sets my logger to the console, which goes to the debug output.
             Log.InitializeWith<ConsoleAndFileLogger>();
 

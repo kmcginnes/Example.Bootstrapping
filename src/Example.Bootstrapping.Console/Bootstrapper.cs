@@ -24,6 +24,8 @@ namespace Example.Bootstrapping.Console
 
             GlobalExceptionHandlers.WireUp();
 
+            System.Console.OutputEncoding = Encoding.UTF8;
+
             var environment = new EnvironmentFacade(Assembly.GetExecutingAssembly());
 
             var appSettings = ConfigurationParser.Parse(commandLineArgs, ConfigurationManager.AppSettings);
