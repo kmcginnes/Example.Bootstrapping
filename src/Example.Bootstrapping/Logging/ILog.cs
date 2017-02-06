@@ -1,15 +1,8 @@
 ﻿using System;
 
+// ReSharper disable once CheckNamespace
 namespace Example.Bootstrapping
 {
-    /// <summary>
-    /// Ensures a default constructor for the logger type
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public interface ILog<T>
-    {
-    }
-
     /// <summary>
     /// Custom interface for logging messages
     /// </summary>
@@ -22,11 +15,22 @@ namespace Example.Bootstrapping
         void InitializeFor(string loggerName);
 
         /// <summary>
+        /// Trace level of the specified message. The other method is preferred since the execution is deferred.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        void Trace(string message);
+
+        /// <summary>
+        /// Trace level of the specified message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        void Trace(Func<string> message);
+
+        /// <summary>
         /// Debug level of the specified message. The other method is preferred since the execution is deferred.
         /// </summary>
         /// <param name="message">The message.</param>
-        /// <param name="formatting">The formatting.</param>
-        void Debug(string message, params object[] formatting);
+        void Debug(string message);
 
         /// <summary>
         /// Debug level of the specified message.
@@ -38,8 +42,7 @@ namespace Example.Bootstrapping
         /// Info level of the specified message. The other method is preferred since the execution is deferred.
         /// </summary>
         /// <param name="message">The message.</param>
-        /// <param name="formatting">The formatting.</param>
-        void Info(string message, params object[] formatting);
+        void Info(string message);
 
         /// <summary>
         /// Info level of the specified message.
@@ -51,8 +54,14 @@ namespace Example.Bootstrapping
         /// Warn level of the specified message. The other method is preferred since the execution is deferred.
         /// </summary>
         /// <param name="message">The message.</param>
-        /// <param name="formatting">The formatting.</param>
-        void Warn(string message, params object[] formatting);
+        void Warn(string message);
+
+        /// <summary>
+        /// Warn level of the specified message. The other method is preferred since the execution is deferred.
+        /// </summary>
+        /// <param name="exception">The exception.</param>
+        /// <param name="message">The message.</param>
+        void Warn(Exception exception, string message);
 
         /// <summary>
         /// Warn level of the specified message.
@@ -61,11 +70,24 @@ namespace Example.Bootstrapping
         void Warn(Func<string> message);
 
         /// <summary>
+        /// Warn level of the specified message.
+        /// </summary>
+        /// <param name="exception">The exception.</param>
+        /// <param name="message">The message.</param>
+        void Warn(Exception exception, Func<string> message);
+
+        /// <summary>
         /// Error level of the specified message. The other method is preferred since the execution is deferred.
         /// </summary>
         /// <param name="message">The message.</param>
-        /// <param name="formatting">The formatting.</param>
-        void Error(string message, params object[] formatting);
+        void Error(string message);
+
+        /// <summary>
+        /// Error level of the specified message. The other method is preferred since the execution is deferred.
+        /// </summary>
+        /// <param name="exception">The exception.</param>
+        /// <param name="message">The message.</param>
+        void Error(Exception exception, string message);
 
         /// <summary>
         /// Error level of the specified message.
@@ -76,16 +98,22 @@ namespace Example.Bootstrapping
         /// <summary>
         /// Error level of the specified message.
         /// </summary>
-        /// <param name="message">The message.</param>
         /// <param name="exception">The exception.</param>
-        void Error(Func<string> message, Exception exception);
+        /// <param name="message">The message.</param>
+        void Error(Exception exception, Func<string> message);
 
         /// <summary>
         /// Fatal level of the specified message. The other method is preferred since the execution is deferred.
         /// </summary>
         /// <param name="message">The message.</param>
-        /// <param name="formatting">The formatting.</param>
-        void Fatal(string message, params object[] formatting);
+        void Fatal(string message);
+
+        /// <summary>
+        /// Fatal level of the specified message. The other method is preferred since the execution is deferred.
+        /// </summary>
+        /// <param name="exception">The exception.</param>
+        /// <param name="message">The message.</param>
+        void Fatal(Exception exception, string message);
 
         /// <summary>
         /// Fatal level of the specified message.
@@ -96,8 +124,8 @@ namespace Example.Bootstrapping
         /// <summary>
         /// Fatal level of the specified message.
         /// </summary>
-        /// <param name="message">The message.</param>
         /// <param name="exception">The exception.</param>
-        void Fatal(Func<string> message, Exception exception);
+        /// <param name="message">The message.</param>
+        void Fatal(Exception exception, Func<string> message);
     }
 }

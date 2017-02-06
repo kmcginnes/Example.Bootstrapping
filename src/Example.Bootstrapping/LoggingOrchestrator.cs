@@ -6,24 +6,16 @@ using System.Threading;
 
 namespace Example.Bootstrapping
 {
-    public class ConsoleAndFileLogger : CompositeLog<ConsoleAndFileLogger>
-    {
-        public ConsoleAndFileLogger() : base(new ConsoleLog(), new FileLog())
-        {
-            
-        }
-    }
-
     public class LoggingOrchestrator
     {
-        public void InitializeLogging(string mainThreadName, string banner)
+        public void InitializeLogging<TLog>(string mainThreadName, string banner) where TLog : ILog, new()
         {
             // Set the main thread's name to make it clear in the logs.
             if (Thread.CurrentThread.Name != mainThreadName)
                 Thread.CurrentThread.Name = mainThreadName;
             
             // Sets my logger to the console, which goes to the debug output.
-            Log.InitializeWith<ConsoleAndFileLogger>();
+            Log.InitializeWith<TLog>();
 
             this.Log().Debug("Logging initialized.");
 

@@ -43,10 +43,7 @@ namespace Example.Bootstrapping
             if (_testLogger != null) return _testLogger;
 
             var logger = Activator.CreateInstance(_logType) as ILog;
-            if (logger != null)
-            {
-                logger.InitializeFor(objectName);
-            }
+            logger?.InitializeFor(objectName);
 
             return logger;
         }

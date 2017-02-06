@@ -2,11 +2,17 @@
 using System.Linq;
 using System.Threading;
 
+// ReSharper disable once CheckNamespace
 namespace Example.Bootstrapping
 {
-    public abstract class DefaultBaseLog<TLog> : ILog, ILog<TLog>
+    public abstract class DefaultBaseLog : ILog
     {
         private string _loggerName;
+
+        void ILog.InitializeFor(string loggerName)
+        {
+            _loggerName = loggerName;
+        }
 
         protected string FormatMessage(string level, string message, Exception exception = null)
         {
@@ -30,100 +36,30 @@ namespace Example.Bootstrapping
         }
 
         protected abstract void Write(string level, string message, Exception exception = null);
+        protected abstract void WriteLazy(string level, Func<string> message, Exception exception = null);
 
-        public void InitializeFor(string loggerName)
-        {
-            _loggerName = loggerName;
-        }
+        public void Trace(string message) => Write("TRACE", message);
+        public void Trace(Func<string> message) => WriteLazy("TRACE", message);
 
-        public void Trace(string message, params object[] formatting)
-        {
-            Write("TRACE", String.Format(message, formatting));
-        }
+        public void Debug(string message) => Write("DEBUG", message);
+        public void Debug(Func<string> message) => WriteLazy("DEBUG", message);
 
-        public void Trace(Func<string> message)
-        {
-            Write("TRACE", message());
-        }
+        public void Info(string message) => Write("INFO", message);
+        public void Info(Func<string> message) => WriteLazy("INFO", message);
 
-        public void Debug(string message, params object[] formatting)
-        {
-            Write("DEBUG", String.Format(message, formatting));
-        }
+        public void Warn(string message) => Write("WARN", message);
+        public void Warn(Func<string> message) => WriteLazy("WARN", message);
+        public void Warn(Exception exception, string message) => Write("WARN", message, exception);
+        public void Warn(Exception exception, Func<string> message) => WriteLazy("WARN", message, exception);
 
-        public void Debug(Func<string> message)
-        {
-            Write("DEBUG", message());
-        }
+        public void Error(string message) => Write("ERROR", message);
+        public void Error(Func<string> message) => WriteLazy("ERROR", message);
+        public void Error(Exception exception, string message) => Write("ERROR", message, exception);
+        public void Error(Exception exception, Func<string> message) => WriteLazy("ERROR", message, exception);
 
-        public void Info(string message, params object[] formatting)
-        {
-            Write("INFO", String.Format(message, formatting));
-        }
-
-        public void Info(Func<string> message)
-        {
-            Write("INFO", message());
-        }
-
-        public void Warn(string message, params object[] formatting)
-        {
-            Write("WARN", String.Format(message, formatting));
-        }
-
-        public void Warn(Func<string> message)
-        {
-            Write("WARN", message());
-        }
-
-        public void Warn(Exception exception, string message, params object[] formatting)
-        {
-            Write("WARN", String.Format(message, formatting), exception);
-        }
-
-        public void Warn(Func<string> message, Exception exception)
-        {
-            Write("WARN", message(), exception);
-        }
-
-        public void Error(string message, params object[] formatting)
-        {
-            Write("ERROR", String.Format(message, formatting));
-        }
-
-        public void Error(Func<string> message)
-        {
-            Write("ERROR", message());
-        }
-
-        public void Error(Exception exception, string message, params object[] formatting)
-        {
-            Write("ERROR", String.Format(message, formatting), exception);
-        }
-
-        public void Error(Func<string> message, Exception exception)
-        {
-            Write("ERROR", message(), exception);
-        }
-
-        public void Fatal(string message, params object[] formatting)
-        {
-            Write("FATAL", String.Format(message, formatting));
-        }
-
-        public void Fatal(Func<string> message)
-        {
-            Write("FATAL", message());
-        }
-
-        public void Fatal(Exception exception, string message, params object[] formatting)
-        {
-            Write("FATAL", String.Format(message, formatting), exception);
-        }
-
-        public void Fatal(Func<string> message, Exception exception)
-        {
-            Write("FATAL", message(), exception);
-        }
+        public void Fatal(string message) => Write("FATAL", message);
+        public void Fatal(Func<string> message) => WriteLazy("FATAL", message);
+        public void Fatal(Exception exception, string message) => Write("FATAL", message, exception);
+        public void Fatal(Exception exception, Func<string> message) => WriteLazy("FATAL", message, exception);
     }
 }

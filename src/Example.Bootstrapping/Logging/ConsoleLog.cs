@@ -1,11 +1,12 @@
 ﻿using System;
 
+// ReSharper disable once CheckNamespace
 namespace Example.Bootstrapping
 {
     /// <summary>
     /// A logger that writes to Console.Out.
     /// </summary>
-    public class ConsoleLog : DefaultBaseLog<ConsoleLog>
+    public class ConsoleLog : DefaultBaseLog
     {
         protected override void Write(string level, string message, Exception exception = null)
         {
@@ -21,6 +22,11 @@ namespace Example.Bootstrapping
             {
                 Console.ResetColor();
             }
+        }
+
+        protected override void WriteLazy(string level, Func<string> message, Exception exception = null)
+        {
+            Write(level, message(), exception);
         }
 
         private ConsoleColor GetColorForLevel(string level)

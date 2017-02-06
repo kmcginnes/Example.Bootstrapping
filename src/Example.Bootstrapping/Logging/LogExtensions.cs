@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 
+// ReSharper disable once CheckNamespace
 namespace Example.Bootstrapping
 {
     /// <summary>
@@ -11,7 +12,7 @@ namespace Example.Bootstrapping
         /// <summary>
         /// Concurrent dictionary that ensures only one instance of a logger for a type.
         /// </summary>
-        private static readonly ConcurrentDictionary<string, ILog> _dictionary = new ConcurrentDictionary<string, ILog>();
+        private static readonly ConcurrentDictionary<string, ILog> Cache = new ConcurrentDictionary<string, ILog>();
         /// <summary>
         /// Gets the logger for <see cref="T"/>.
         /// </summary>
@@ -54,30 +55,7 @@ namespace Example.Bootstrapping
         /// <returns>Instance of a logger for the object.</returns>
         public static ILog Log(this string objectName)
         {
-            return _dictionary.GetOrAdd(objectName, Example.Bootstrapping.Log.GetLoggerFor);
-        }
-
-        public static void Error(this ILog log, Exception exception, string format, params object[] args)
-        {
-            log.Error(() => String.Format(format, args), exception);
-        }
-
-        public static void Fatal(this ILog log, Exception exception, string format, params object[] args)
-        {
-            log.Fatal(() => String.Format(format, args), exception);
-        }
-
-        /// <summary>
-        /// Formats and writes an information level log entry that looks
-        /// like '============= Some message ============='.
-        /// </summary>
-        /// <param name="format">The format.</param>
-        /// <param name="args">The args.</param>
-        public static void Header(this ILog log, string format, params object[] args)
-        {
-            const string wrapping = " ============= ";
-            var wrappedFormat = wrapping + format + wrapping;
-            log.Info(wrappedFormat, args);
+            return Cache.GetOrAdd(objectName, Example.Bootstrapping.Log.GetLoggerFor);
         }
     }
 }

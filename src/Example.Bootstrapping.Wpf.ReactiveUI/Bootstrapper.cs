@@ -25,7 +25,7 @@ namespace Example.Bootstrapping.Wpf.ReactiveUI
             banner.AppendLine(@"                                                 |__|  |__|              ");
             banner.AppendLine(@"    ");
             var logging = new LoggingOrchestrator();
-            logging.InitializeLogging("Main", banner.ToString());
+            logging.InitializeLogging<ConsoleAndFileLogger>("Main", banner.ToString());
 
             GlobalExceptionHandlers.WireUp();
 

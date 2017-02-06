@@ -22,6 +22,7 @@ namespace Example.Bootstrapping.TopShelf
 
         public void Start(string[] commandLineArgs)
         {
+            Log4NetConfig.Setup();
             var banner = new StringBuilder();
             banner.AppendLine(@" ______               __          __                                     ");
             banner.AppendLine(@"|   __ \.-----.-----.|  |_.-----.|  |_.----.---.-.-----.-----.-----.----.");
@@ -30,7 +31,7 @@ namespace Example.Bootstrapping.TopShelf
             banner.AppendLine(@"                                                 |__|  |__|              ");
             banner.AppendLine(@"    ");
             var logging = new LoggingOrchestrator();
-            logging.InitializeLogging("Main", banner.ToString());
+            logging.InitializeLogging<Log4NetLog>("Main", banner.ToString());
             
             GlobalExceptionHandlers.WireUp();
 

@@ -2,12 +2,13 @@
 using System.IO;
 using System.Text;
 
+// ReSharper disable once CheckNamespace
 namespace Example.Bootstrapping
 {
     /// <summary>
     /// A logger that appends the log message to a given file.
     /// </summary>
-    public class FileLog : DefaultBaseLog<ConsoleLog>
+    public class FileLog : DefaultBaseLog
     {
         readonly string _logFilePath;
 
@@ -43,6 +44,11 @@ namespace Example.Bootstrapping
         {
             var formattedMessage = FormatMessage(level, message, exception);
             WriteLineToFile(formattedMessage);
+        }
+
+        protected override void WriteLazy(string level, Func<string> message, Exception exception = null)
+        {
+            Write(level, message(), exception);
         }
     }
 }
