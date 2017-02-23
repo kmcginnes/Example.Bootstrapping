@@ -35,6 +35,7 @@ namespace Example.Bootstrapping.Wpf.ReactiveUI
             logging.LogUsefulInformation(environment, appSettings);
 
             var app = new App { ShutdownMode = ShutdownMode.OnLastWindowClose };
+            app.Exit += (s, e) => app.Log().Info($"{environment.GetProductName()} is exiting");
             app.InitializeComponent();
 
             var window = new MainWindow();
