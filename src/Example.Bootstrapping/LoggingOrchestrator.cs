@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using Example.Bootstrapping.Logging;
 
@@ -23,8 +22,7 @@ namespace Example.Bootstrapping
             // Show a banner to easily pick out where new instances start
             // in the log file. Plus it just looks cool.
             banner.Split(new[] {Environment.NewLine}, StringSplitOptions.None)
-                .Do(x => this.Log().Info(x))
-                .ToList();
+                .ForEach(x => this.Log().Info(x));
         }
 
         public void LogUsefulInformation(IEnvironmentFacade environment, AppSettings appSettings)
