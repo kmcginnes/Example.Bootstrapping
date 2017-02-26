@@ -33,6 +33,8 @@ namespace Example.Bootstrapping.Wpf.ReactiveUI
             var logging = new LoggingOrchestrator();
             logging.InitializeLogging<ConsoleAndFileLogger>("Main", banner.ToString());
 
+            var app = new App { ShutdownMode = ShutdownMode.OnLastWindowClose };
+
             GlobalExceptionHandlers.WireUp();
 
             var environment = new EnvironmentFacade(Assembly.GetExecutingAssembly());
@@ -40,15 +42,14 @@ namespace Example.Bootstrapping.Wpf.ReactiveUI
             var appSettings = ConfigurationParser.Parse(args, ConfigurationManager.AppSettings);
             logging.LogUsefulInformation(environment, appSettings);
 
-            var app = new App {ShutdownMode = ShutdownMode.OnLastWindowClose};
             app.Exit += (s, e) => app.Log().Info($"{environment.GetProductName()} is exiting");
             app.InitializeComponent();
 
-            var shell = new ShellView();
-            shell.ViewModel = new ShellViewModel();
-
+            var shell = new ShellView {ViewModel = new ShellViewModel()};
             shell.Show();
+
             app.Run();
+            this.Log().Debug($"{environment.GetProductName()} has exited.");
         }
     }
 }
