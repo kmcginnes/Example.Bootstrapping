@@ -17,6 +17,11 @@ namespace Example.Bootstrapping.Wpf.ReactiveUI
         {
             FreeConsole();
 
+            new Bootstrapper().Run(args);
+        }
+
+        private void Run(string[] args)
+        {
             var banner = new StringBuilder();
             banner.AppendLine(@" ______               __          __                                     ");
             banner.AppendLine(@"|   __ \.-----.-----.|  |_.-----.|  |_.----.---.-.-----.-----.-----.----.");
@@ -34,13 +39,14 @@ namespace Example.Bootstrapping.Wpf.ReactiveUI
             var appSettings = ConfigurationParser.Parse(args, ConfigurationManager.AppSettings);
             logging.LogUsefulInformation(environment, appSettings);
 
-            var app = new App { ShutdownMode = ShutdownMode.OnLastWindowClose };
+            var app = new App {ShutdownMode = ShutdownMode.OnLastWindowClose};
             app.Exit += (s, e) => app.Log().Info($"{environment.GetProductName()} is exiting");
             app.InitializeComponent();
 
-            var window = new MainWindow();
+            var shell = new ShellView();
+            shell.ViewModel = new ShellViewModel();
 
-            window.Show();
+            shell.Show();
             app.Run();
         }
     }
