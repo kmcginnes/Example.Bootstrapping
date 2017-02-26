@@ -1,5 +1,4 @@
-﻿// ReSharper disable once CheckNamespace
-namespace Example.Bootstrapping
+﻿namespace Example.Bootstrapping.Logging
 {
     public class ConsoleAndFileLogger : CompositeLog
     {

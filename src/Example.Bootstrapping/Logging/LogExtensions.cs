@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using Example.Bootstrapping.Logging;
 
 // ReSharper disable once CheckNamespace
+// The logging extension should exist in your root application namespace
 namespace Example.Bootstrapping
 {
     /// <summary>
@@ -55,7 +57,7 @@ namespace Example.Bootstrapping
         /// <returns>Instance of a logger for the object.</returns>
         public static ILog Log(this string objectName)
         {
-            return Cache.GetOrAdd(objectName, Example.Bootstrapping.Log.GetLoggerFor);
+            return Cache.GetOrAdd(objectName, Logging.Log.GetLoggerFor);
         }
     }
 }

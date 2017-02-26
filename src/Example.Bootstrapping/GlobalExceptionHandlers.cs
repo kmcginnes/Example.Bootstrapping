@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Example.Bootstrapping.Logging;
 
 namespace Example.Bootstrapping
 {

@@ -1,7 +1,6 @@
 ﻿using System;
 
-// ReSharper disable once CheckNamespace
-namespace Example.Bootstrapping
+namespace Example.Bootstrapping.Logging
 {
     /// <summary>
     /// A logger that writes to Console.Out.

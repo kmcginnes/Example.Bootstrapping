@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.IO;
+using Example.Bootstrapping.Logging;
 
 namespace Example.Bootstrapping.Console
 {

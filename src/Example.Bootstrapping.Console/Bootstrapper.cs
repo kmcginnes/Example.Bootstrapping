@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac;
+using Example.Bootstrapping.Logging;
 using MediatR;
 
 namespace Example.Bootstrapping.Console

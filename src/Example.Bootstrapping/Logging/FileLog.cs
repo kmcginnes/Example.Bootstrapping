@@ -2,8 +2,7 @@
 using System.IO;
 using System.Text;
 
-// ReSharper disable once CheckNamespace
-namespace Example.Bootstrapping
+namespace Example.Bootstrapping.Logging
 {
     /// <summary>
     /// A logger that appends the log message to a given file.
@@ -14,7 +13,10 @@ namespace Example.Bootstrapping
 
         public FileLog()
         {
-            _logFilePath = Path.Combine(Environment.CurrentDirectory, "app.log");
+            var programData = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+            var logPath = Path.Combine(programData, "Example.Bootstapping.Wpf.ReactiveUI", "app.log");
+
+            _logFilePath = logPath;
         }
 
         protected void EnsurePathExists(string filePath)

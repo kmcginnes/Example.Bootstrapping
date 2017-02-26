@@ -1,10 +1,13 @@
 ﻿using log4net;
 using System;
+using System.Diagnostics;
 using System.Runtime;
 using log4net.Core;
+using ILog = Example.Bootstrapping.Logging.ILog;
 
 namespace Example.Bootstrapping.TopShelf
 {
+    [DebuggerDisplay("{_logger.Logger.Name}")]
     public class Log4NetLog : ILog
     {
         private log4net.ILog _logger;

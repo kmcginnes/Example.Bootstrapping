@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
+using Example.Bootstrapping.Logging;
 
 namespace Example.Bootstrapping.Wpf.ReactiveUI
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace Example.Bootstrapping
+namespace Example.Bootstrapping.Logging
 {
     /// <summary>
     /// Logger type initialization

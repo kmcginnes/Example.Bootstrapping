@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 
-// ReSharper disable once CheckNamespace
-namespace Example.Bootstrapping
+namespace Example.Bootstrapping.Logging
 {
+    [DebuggerDisplay("{_loggerName}")]
     public abstract class DefaultBaseLog : ILog
     {
         private string _loggerName;
