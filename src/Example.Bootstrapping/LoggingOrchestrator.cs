@@ -52,11 +52,17 @@ namespace Example.Bootstrapping
                 ["Running as"] = $"{principalName} ({culture})",
                 ["Network host"] = $"{hostName} ({ipAddress})",
                 ["Windows version"] = windowsVersion,
-                ["Configuration"] = "=====================",
             };
 
-            appSettings.GetType().GetProperties()
-                .ForEach(x => keyValues.Add(x.Name, x.GetValue(appSettings)?.ToString() ?? "[NULL]"));
+            var appSettingProperties = appSettings.GetType().GetProperties();
+
+            if (appSettingProperties.Any())
+            {
+                keyValues.Add("Configuration", "=====================");
+
+                appSettingProperties
+                    .ForEach(x => keyValues.Add(x.Name, x.GetValue(appSettings)?.ToString() ?? "[NULL]"));
+            }
 
             var longestKey = keyValues.Keys.Max(x => x.Length);
 
