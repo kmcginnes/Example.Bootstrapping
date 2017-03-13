@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using Example.Bootstrapping.Logging;
 
 // ReSharper disable once CheckNamespace
@@ -58,6 +59,19 @@ namespace Example.Bootstrapping
         public static ILog Log(this string objectName)
         {
             return Cache.GetOrAdd(objectName, Logging.Log.GetLoggerFor);
+        }
+
+        public static IDisposable Time(this ILog logger, string context)
+        {
+            var stopwatch = new Stopwatch();
+
+            stopwatch.Start();
+
+            return Disposable.Create(() =>
+            {
+                stopwatch.Stop();
+                logger.Debug($"Finished timing {context}. It took {stopwatch.ElapsedMilliseconds} ms");
+            });
         }
     }
 }
