@@ -61,6 +61,7 @@
     <Compile Include="FindJobs\FindJobs.cs" />
     <Compile Include="FindJobs\FindJobsConsoleCommandProcessor.cs" />
     <Compile Include="FindJobs\FindJobsHandler.cs" />
+    <Compile Include="LoggingBehavior.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScopedMediator.cs" />
