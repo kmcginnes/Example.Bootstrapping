@@ -103,6 +103,10 @@ namespace Example.Bootstrapping.TopShelf
 
             // Allow IEnumerable<T> of any services
             container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel));
+
+            // Allow contravariance in generic resolution
+            container.Kernel.AddHandlersFilter(new ContravariantFilter());
+
             return container;
         }
 

@@ -28,7 +28,6 @@ namespace Example.Bootstrapping.TopShelf
 
             // Register MediatR related types
             container.Register(Component.For<IMediator>().ImplementedBy<ScopedMediator>());
-            container.Kernel.AddHandlersFilter(new ContravariantFilter());
             
             container.Register(
                 Classes.FromAssemblyInThisApplication()
