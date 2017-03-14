@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppSettings.cs" />
+    <Compile Include="Disposable.cs" />
     <Compile Include="Logging\ConsoleAndFileLogger.cs" />
     <Compile Include="DatabaseContext.cs" />
     <Compile Include="EnvironmentFacade.cs" />
