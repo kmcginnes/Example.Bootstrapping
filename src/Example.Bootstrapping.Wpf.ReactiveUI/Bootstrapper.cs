@@ -45,7 +45,7 @@ namespace Example.Bootstrapping.Wpf.ReactiveUI
             app.Exit += (s, e) => app.Log().Info($"{environment.GetProductName()} is exiting");
             app.InitializeComponent();
 
-            var shell = new ShellView {ViewModel = new ShellViewModel()};
+            var shell = new ShellView {ViewModel = new ShellViewModel(new ShellViewModelValidator())};
             shell.Show();
 
             app.Run();

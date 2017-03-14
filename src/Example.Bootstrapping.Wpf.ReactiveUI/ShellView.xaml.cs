@@ -12,7 +12,7 @@ namespace Example.Bootstrapping.Wpf.ReactiveUI
 
             this.WhenActivated(d =>
             {
-                this.OneWayBind(ViewModel, vm => vm.Header, v => v.Header.Text).DisposeWith(d);
+                //this.OneWayBind(ViewModel, vm => vm.Header, v => v.Header.Text).DisposeWith(d);
             });
         }
 

@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:st="http://schemas.spicytaco.io/"
         mc:Ignorable="d"
         Title="ShellView" Height="350" Width="525"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -15,7 +16,10 @@
         FontFamily="{DynamicResource MaterialDesignFont}">
     <Grid>
         <md:Card Padding="32" Margin="16">
-            <TextBlock x:Name="Header" Style="{DynamicResource MaterialDesignTitleTextBlock}">My First Material Design App</TextBlock>
+            <st:StackPanel MarginBetweenChildren="10">
+                <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}">My First Material Design App</TextBlock>
+                <TextBox x:Name="Header" Text="{Binding Header, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
+            </st:StackPanel>
         </md:Card>
     </Grid>
 </Window>
