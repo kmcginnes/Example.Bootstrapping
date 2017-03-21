@@ -39,6 +39,12 @@ namespace Example.Bootstrapping
             return Cache.GetOrAdd(objectName, Logging.Log.GetLoggerFor);
         }
 
+        /// <summary>
+        /// Starts a timer until the return value is disposed, and then prints out how long it took.
+        /// </summary>
+        /// <param name="logger">The logger</param>
+        /// <param name="context">A name for what is being timed</param>
+        /// <returns></returns>
         public static IDisposable Time(this ILog logger, string context)
         {
             var stopwatch = new Stopwatch();
