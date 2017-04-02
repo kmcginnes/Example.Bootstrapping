@@ -43,11 +43,11 @@ namespace Example.Bootstrapping.Console
             }
         }
 
-        private IMediator CreateScopedMediator(ILifetimeScope scope)
+        private static IMediator CreateScopedMediator(IComponentContext scope)
         {
             var mediator = new Mediator(
-                t => scope.Resolve(t),
-                t => (IEnumerable<object>)scope.Resolve(typeof(IEnumerable<>).MakeGenericType(t)));
+                type => scope.IsRegistered(type) ? scope.Resolve(type) : null,
+                type => (IEnumerable<object>)scope.Resolve(typeof(IEnumerable<>).MakeGenericType(type)));
             return mediator;
         }
     }
