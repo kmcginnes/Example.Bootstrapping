@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 namespace Example.Bootstrapping
 {
@@ -6,12 +7,18 @@ namespace Example.Bootstrapping
     {
         public DatabaseContext()
         {
-            this.Log().Debug($"Inside ctor()");
+            this.Log().Debug($"{nameof(DatabaseContext)}.ctor()");
         }
 
         public void Dispose()
         {
-            this.Log().Debug("Inside Dispose()");
+            this.Log().Debug($"{nameof(DatabaseContext)}.Dispose()");
+        }
+
+        public Task QueryAsync()
+        {
+            this.Log().Debug($"Querying the database for stuff...");
+            return Task.Delay(TimeSpan.FromMilliseconds(200));
         }
     }
 }

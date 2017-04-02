@@ -9,12 +9,12 @@ namespace Example.Bootstrapping.TopShelf
     {
         public LoggingBehavior()
         {
-            this.Log().Debug($"Inside ctor()");
+            this.Log().Debug($"{nameof(LoggingBehavior<TRequest, TResponse>)}.ctor()");
         }
 
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next)
         {
-            this.Log().Debug($"Inside Handle()");
+            this.Log().Debug($"{nameof(LoggingBehavior<TRequest, TResponse>)}.Handle()");
 
             var requestTypeName = typeof(TRequest).GetFriendlyName();
             using (request.Log().Time(requestTypeName))
@@ -39,7 +39,7 @@ namespace Example.Bootstrapping.TopShelf
 
         public void Dispose()
         {
-            this.Log().Debug($"Inside Dispose()");
+            this.Log().Debug($"{nameof(LoggingBehavior<TRequest, TResponse>)}.Dispose()");
         }
     }
 }
