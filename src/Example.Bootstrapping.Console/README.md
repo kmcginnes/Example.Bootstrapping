@@ -51,15 +51,12 @@ private IMediator CreateScopedMediator(ILifetimeScope scope)
 This ends up with an execution pipeline that looks like this:
 
 ```
-04:22:00.938 PM DEBUG [4][DatabaseContext]  Inside ctor()
-04:22:00.947 PM DEBUG [4][FindJobsHandler]  Inside ctor()
-04:22:00.968 PM DEBUG [4][LoggingBehavior<FindJobs,Unit>]  Inside ctor()
-04:22:01.795 PM DEBUG [4][LoggingBehavior<FindJobs,Unit>]  Inside Handle()
-04:22:01.967 PM  INFO [4][FindJobs]  Handling FindJobs {}
-04:22:01.978 PM DEBUG [4][FindJobsHandler]  Inside Handle()
-04:22:02.003 PM  INFO [4][FindJobs]  Handled FindJobs with response Unit {}
-04:22:02.011 PM DEBUG [4][FindJobs]  Finished timing FindJobs. It took 206 ms
-04:22:02.028 PM DEBUG [4][LoggingBehavior<FindJobs,Unit>]  Inside Dispose()
-04:22:02.033 PM DEBUG [4][FindJobsHandler]  Inside Dispose()
-04:22:02.040 PM DEBUG [4][DatabaseContext]  Inside Dispose()
+DatabaseContext.ctor()
+FindJobsHandler.ctor()
+LoggingBehavior.ctor()
+LoggingBehavior.Handle()
+FindJobsHandler.Handle()
+LoggingBehavior.Dispose()
+FindJobsHandler.Dispose()
+DatabaseContext.Dispose()
 ```
