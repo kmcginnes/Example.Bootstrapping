@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace Example.Bootstrapping.Logging
 {
-    [DebuggerDisplay("{_loggerName}")]
+    [DebuggerDisplay("{" + nameof(_loggerName) + "}")]
     public abstract class DefaultBaseLog : ILog
     {
         private readonly string _loggerName;

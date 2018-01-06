@@ -24,15 +24,6 @@ namespace Example.Bootstrapping.TopShelf
             return settings;
         }
 
-        public static void LogSettings(AppSettings settings)
-        {
-            Logger.Info("");
-            Logger.Info("AppSettings are defined as follows:");
-            Logger.Info($"              DataDirectory = {settings.DataDirectory}");
-            Logger.Info($"      DefaultPlaybackVolume = {settings.DefaultVolume}%");
-            Logger.Info("");
-        }
-
         public static string GetDataDirectory(NameValueCollection appSettings)
         {
             var defaultPath = @"C:\Temp\";
