@@ -11,7 +11,7 @@ namespace Example.Bootstrapping.Logging
     {
         readonly string _logFilePath;
 
-        public FileLog()
+        public FileLog(string loggerName) : base(loggerName)
         {
             var programData = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
             var logPath = Path.Combine(programData, "Example.Bootstapping.Wpf.ReactiveUI", "app.log");

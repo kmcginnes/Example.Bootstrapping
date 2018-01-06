@@ -8,16 +8,25 @@ namespace Example.Bootstrapping.Logging
     /// </summary>
     public static class Log
     {
-        private static Type _logType = typeof(NullLog);
         private static ILog _testLogger;
+        private static Func<string, ILog> _createLogger = name => new NullLog(name);
 
         /// <summary>
         /// Sets up logging to be with a certain type
         /// </summary>
         /// <typeparam name="T">The type of ILog for the application to use</typeparam>
-        public static void InitializeWith<T>() where T : ILog, new()
+        public static void InitializeWith<T>() where T : ILog
         {
-            _logType = typeof(T);
+            _createLogger = name => Activator.CreateInstance(typeof(T), name) as ILog;
+        }
+
+        /// <summary>
+        /// Sets up logging to be with a certain type
+        /// </summary>
+        /// <typeparam name="T">The type of ILog for the application to use</typeparam>
+        public static void InitializeWith<T>(Func<string, T> createLogger) where T : ILog, new()
+        {
+            _createLogger = name => createLogger(name);
         }
 
         /// <summary>
@@ -28,7 +37,6 @@ namespace Example.Bootstrapping.Logging
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static void InitializeWith(ILog testLoggerType)
         {
-            _logType = testLoggerType.GetType();
             _testLogger = testLoggerType;
         }
 
@@ -42,8 +50,7 @@ namespace Example.Bootstrapping.Logging
         {
             if (_testLogger != null) return _testLogger;
 
-            var logger = Activator.CreateInstance(_logType) as ILog;
-            logger?.InitializeFor(objectName);
+            var logger = _createLogger(objectName);
 
             return logger;
         }

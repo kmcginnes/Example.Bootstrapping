@@ -8,9 +8,9 @@ namespace Example.Bootstrapping.Logging
     [DebuggerDisplay("{_loggerName}")]
     public abstract class DefaultBaseLog : ILog
     {
-        private string _loggerName;
+        private readonly string _loggerName;
 
-        void ILog.InitializeFor(string loggerName)
+        protected DefaultBaseLog(string loggerName)
         {
             _loggerName = loggerName;
         }

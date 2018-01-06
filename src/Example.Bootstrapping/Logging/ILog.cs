@@ -8,12 +8,6 @@ namespace Example.Bootstrapping.Logging
     public interface ILog
     {
         /// <summary>
-        /// Initializes the instance for the logger name
-        /// </summary>
-        /// <param name="loggerName">Name of the logger</param>
-        void InitializeFor(string loggerName);
-
-        /// <summary>
         /// Trace level of the specified message. The other method is preferred since the execution is deferred.
         /// </summary>
         /// <param name="message">The message.</param>

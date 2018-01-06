@@ -12,11 +12,6 @@ namespace Example.Bootstrapping.Logging
         {
             _loggers = loggers.ToList();
         }
-
-        public void InitializeFor(string loggerName)
-        {
-            _loggers.ForEach(x => x.InitializeFor(loggerName));
-        }
         
         public void Trace(string message) => _loggers.ForEach(x => x.Trace(message));
         public void Trace(Func<string> message) => _loggers.ForEach(x => x.Trace(message));

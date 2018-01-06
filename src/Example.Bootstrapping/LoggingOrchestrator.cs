@@ -8,7 +8,7 @@ namespace Example.Bootstrapping
 {
     public class LoggingOrchestrator
     {
-        public void InitializeLogging<TLog>(string mainThreadName, string banner) where TLog : ILog, new()
+        public void InitializeLogging<TLog>(string mainThreadName, string banner) where TLog : ILog
         {
             // Set the main thread's name to make it clear in the logs.
             if (Thread.CurrentThread.Name != mainThreadName)
