@@ -10,18 +10,20 @@ namespace Example.Bootstrapping.Wpf.ReactiveUI
 {
     public class Bootstrapper
     {
+        private EnvironmentFacade _environment;
+
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool FreeConsole();
 
         [STAThread]
-        public static void Main(string[] args)
+        public static int Main(string[] args)
         {
             FreeConsole();
 
-            new Bootstrapper().Run(args);
+            return new Bootstrapper().Run(args);
         }
 
-        private void Run(string[] args)
+        private int Run(string[] args)
         {
             var banner = new StringBuilder();
             banner.AppendLine(@" ______               __          __                                     ");
@@ -37,19 +39,26 @@ namespace Example.Bootstrapping.Wpf.ReactiveUI
 
             GlobalExceptionHandlers.WireUp();
 
-            var environment = new EnvironmentFacade(Assembly.GetExecutingAssembly());
+            _environment = new EnvironmentFacade(Assembly.GetExecutingAssembly());
 
             var appSettings = ConfigurationParser.Parse(args, ConfigurationManager.AppSettings);
-            logging.LogUsefulInformation(environment, appSettings);
+            logging.LogUsefulInformation(_environment, appSettings);
 
-            app.Exit += (s, e) => app.Log().Info($"{environment.GetProductName()} is exiting");
+            app.Exit += OnExit;
             app.InitializeComponent();
 
             var shell = new ShellView {ViewModel = new ShellViewModel(new ShellViewModelValidator())};
             shell.Show();
 
-            app.Run();
-            this.Log().Debug($"{environment.GetProductName()} has exited.");
+            var exitCode = app.Run();
+            this.Log().Debug($"{_environment.GetProductName()} has exited with code {exitCode}.");
+            Serilog.Log.CloseAndFlush();
+            return exitCode;
+        }
+
+        private void OnExit(object s, ExitEventArgs e)
+        {
+            s.Log().Info($"{_environment.GetProductName()} is exiting");
         }
     }
 }
