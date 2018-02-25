@@ -12,9 +12,5 @@ namespace Example.Bootstrapping.Logging
         protected override void Write(string level, string message, Exception exception = null)
         {
         }
-
-        protected override void WriteLazy(string level, Func<string> message, Exception exception = null)
-        {
-        }
     }
 }

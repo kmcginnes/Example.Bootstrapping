@@ -4,7 +4,6 @@
     {
         public ConsoleAndFileLogger(string loggerName) : base(new ConsoleLog(loggerName), new FileLog(loggerName))
         {
-            
         }
     }
 }

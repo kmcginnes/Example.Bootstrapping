@@ -29,27 +29,13 @@ namespace Example.Bootstrapping.TopShelf
         }
 
         [TargetedPatchingOptOut("Performance critical")] public void Trace(string message) => Log(Level.Trace, message);
-        [TargetedPatchingOptOut("Performance critical")] public void Trace(Func<string> message) => Log(Level.Trace, message);
-
         [TargetedPatchingOptOut("Performance critical")] public void Debug(string message) => Log(Level.Debug, message);
-        [TargetedPatchingOptOut("Performance critical")] public void Debug(Func<string> message) => Log(Level.Debug, message);
-
         [TargetedPatchingOptOut("Performance critical")] public void Info(string message) => Log(Level.Info, message);
-        [TargetedPatchingOptOut("Performance critical")] public void Info(Func<string> message) => Log(Level.Info, message);
-
         [TargetedPatchingOptOut("Performance critical")] public void Warn(string message) => Log(Level.Warn, message);
         [TargetedPatchingOptOut("Performance critical")] public void Warn(Exception exception, string message) => Log(Level.Warn, message, exception);
-        [TargetedPatchingOptOut("Performance critical")] public void Warn(Func<string> message) => Log(Level.Warn, message);
-        [TargetedPatchingOptOut("Performance critical")] public void Warn(Exception exception, Func<string> message) => Log(Level.Warn, message, exception);
-
         [TargetedPatchingOptOut("Performance critical")] public void Error(string message) => Log(Level.Error, message);
         [TargetedPatchingOptOut("Performance critical")] public void Error(Exception exception, string message) => Log(Level.Error, message, exception);
-        [TargetedPatchingOptOut("Performance critical")] public void Error(Func<string> message) => Log(Level.Error, message);
-        [TargetedPatchingOptOut("Performance critical")] public void Error(Exception exception, Func<string> message) => Log(Level.Error, message, exception);
-
         [TargetedPatchingOptOut("Performance critical")] public void Fatal(string message) => Log(Level.Fatal, message);
         [TargetedPatchingOptOut("Performance critical")] public void Fatal(Exception exception, string message) => Log(Level.Fatal, message, exception);
-        [TargetedPatchingOptOut("Performance critical")] public void Fatal(Func<string> message) => Log(Level.Fatal, message);
-        [TargetedPatchingOptOut("Performance critical")] public void Fatal(Exception exception, Func<string> message) => Log(Level.Fatal, message, exception);
     }
 }

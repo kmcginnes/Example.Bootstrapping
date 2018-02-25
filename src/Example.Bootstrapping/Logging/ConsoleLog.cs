@@ -25,8 +25,6 @@ namespace Example.Bootstrapping.Logging
             }
         }
 
-        protected override void WriteLazy(string level, Func<string> message, Exception exception = null) => Write(level, message(), exception);
-
         private ConsoleColor GetColorForLevel(string level)
         {
             if (String.Equals(level, "ERROR", StringComparison.InvariantCultureIgnoreCase))

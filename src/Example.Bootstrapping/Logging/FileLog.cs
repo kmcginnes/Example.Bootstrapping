@@ -47,10 +47,5 @@ namespace Example.Bootstrapping.Logging
             var formattedMessage = FormatMessage(level, message, exception);
             WriteLineToFile(formattedMessage);
         }
-
-        protected override void WriteLazy(string level, Func<string> message, Exception exception = null)
-        {
-            Write(level, message(), exception);
-        }
     }
 }
