@@ -15,30 +15,30 @@ namespace Example.Bootstrapping
         /// <summary>
         /// Concurrent dictionary that ensures only one instance of a logger for a type.
         /// </summary>
-        private static readonly ConcurrentDictionary<string, ILog> Cache = new ConcurrentDictionary<string, ILog>();
-        
+        private static readonly ConcurrentDictionary<Type, ILog> Cache = new ConcurrentDictionary<Type, ILog>();
+
         /// <summary>
         /// Gets the logger for <see cref="T"/>.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="type">The type to get the logger for.</param>
+        /// <param name="instance">The instance to use for the logger context type.</param>
         /// <returns>Instance of a logger for the object.</returns>
-        public static ILog Log<T>(this T type)
+        public static ILog Log<T>(this T instance)
         {
-            string objectName = type.GetType().GetFriendlyName();
-            return Log(objectName);
+            var realType = instance.GetType();
+            return Log(realType);
         }
 
         /// <summary>
         /// Gets the logger for the specified object name.
         /// </summary>
-        /// <param name="objectName">Either use the fully qualified object name or the short. If used with Log&lt;T&gt;() you must use the fully qualified object name"/></param>
+        /// <param name="type">Either use the fully qualified object name or the short. If used with Log&lt;T&gt;() you must use the fully qualified object name"/></param>
         /// <returns>Instance of a logger for the object.</returns>
-        public static ILog Log(this string objectName)
+        public static ILog Log(this Type type)
         {
-            return Cache.GetOrAdd(objectName, Logging.Log.GetLoggerFor);
+            return Cache.GetOrAdd(type, Logging.Log.GetLoggerFor);
         }
-
+        
         /// <summary>
         /// Starts a timer until the return value is disposed, and then prints out how long it took.
         /// </summary>

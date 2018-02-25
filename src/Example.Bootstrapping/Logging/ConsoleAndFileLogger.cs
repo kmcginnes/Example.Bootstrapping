@@ -1,8 +1,11 @@
-﻿namespace Example.Bootstrapping.Logging
+﻿using System;
+
+namespace Example.Bootstrapping.Logging
 {
     public class ConsoleAndFileLogger : CompositeLog
     {
-        public ConsoleAndFileLogger(string loggerName) : base(new ConsoleLog(loggerName), new FileLog(loggerName))
+        public ConsoleAndFileLogger(Type loggerTypeContext)
+            : base(new ConsoleLog(loggerTypeContext), new FileLog(loggerTypeContext))
         {
         }
     }

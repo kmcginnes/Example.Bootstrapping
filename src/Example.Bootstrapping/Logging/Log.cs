@@ -9,7 +9,7 @@ namespace Example.Bootstrapping.Logging
     public static class Log
     {
         private static ILog _testLogger;
-        private static Func<string, ILog> _createLogger = name => new NullLog(name);
+        private static Func<Type, ILog> _createLogger = type => new NullLog(type);
 
         /// <summary>
         /// Sets up logging to be with a certain type
@@ -17,16 +17,16 @@ namespace Example.Bootstrapping.Logging
         /// <typeparam name="T">The type of ILog for the application to use</typeparam>
         public static void InitializeWith<T>() where T : ILog
         {
-            _createLogger = name => Activator.CreateInstance(typeof(T), name) as ILog;
+            _createLogger = type => Activator.CreateInstance(typeof(T), type) as ILog;
         }
 
         /// <summary>
         /// Sets up logging to be with a certain type
         /// </summary>
         /// <typeparam name="T">The type of ILog for the application to use</typeparam>
-        public static void InitializeWith<T>(Func<string, T> createLogger) where T : ILog, new()
+        public static void InitializeWith<T>(Func<Type, T> createLogger) where T : ILog, new()
         {
-            _createLogger = name => createLogger(name);
+            _createLogger = type => createLogger(type);
         }
 
         /// <summary>
@@ -44,13 +44,13 @@ namespace Example.Bootstrapping.Logging
         /// Initializes a new instance of a logger for an object.
         /// This should be done only once per object name.
         /// </summary>
-        /// <param name="objectName">Name of the object.</param>
+        /// <param name="loggerTypeContext">Name of the object.</param>
         /// <returns>ILog instance for an object if log type has been intialized; otherwise null</returns>
-        public static ILog GetLoggerFor(string objectName)
+        public static ILog GetLoggerFor(Type loggerTypeContext)
         {
             if (_testLogger != null) return _testLogger;
 
-            var logger = _createLogger(objectName);
+            var logger = _createLogger(loggerTypeContext);
 
             return logger;
         }

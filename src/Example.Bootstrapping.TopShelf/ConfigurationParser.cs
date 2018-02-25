@@ -7,7 +7,7 @@ namespace Example.Bootstrapping.TopShelf
 {
     public static class ConfigurationParser
     {
-        private static readonly ILog Logger = typeof(ConfigurationParser).Name.Log();
+        private static readonly ILog Logger = typeof(ConfigurationParser).Log();
 
         public static AppSettings Parse(string[] commandLineArgs, NameValueCollection appSettings)
         {

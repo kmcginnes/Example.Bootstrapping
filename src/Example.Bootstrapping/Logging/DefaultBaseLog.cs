@@ -10,9 +10,9 @@ namespace Example.Bootstrapping.Logging
     {
         private readonly string _loggerName;
 
-        protected DefaultBaseLog(string loggerName)
+        protected DefaultBaseLog(Type loggerTypeContext)
         {
-            _loggerName = loggerName;
+            _loggerName = loggerTypeContext.GetFriendlyName();
         }
 
         protected string FormatMessage(string level, string message, Exception exception = null)

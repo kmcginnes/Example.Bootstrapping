@@ -7,7 +7,7 @@ namespace Example.Bootstrapping
 {
     public static class GlobalExceptionHandlers
     {
-        private static readonly ILog Logger = nameof(GlobalExceptionHandlers).Log();
+        private static readonly ILog Logger = typeof(GlobalExceptionHandlers).Log();
 
         public static void WireUp()
         {

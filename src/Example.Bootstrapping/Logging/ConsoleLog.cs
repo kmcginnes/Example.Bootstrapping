@@ -7,7 +7,7 @@ namespace Example.Bootstrapping.Logging
     /// </summary>
     public class ConsoleLog : DefaultBaseLog
     {
-        public ConsoleLog(string loggerName) : base(loggerName) { }
+        public ConsoleLog(Type loggerTypeContext) : base(loggerTypeContext) { }
 
         protected override void Write(string level, string message, Exception exception = null)
         {
