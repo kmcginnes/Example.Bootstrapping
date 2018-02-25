@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Configuration;
+using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
-using Example.Bootstrapping.Logging;
+using Serilog;
 
 namespace Example.Bootstrapping.Wpf.ReactiveUI
 {
@@ -25,6 +26,8 @@ namespace Example.Bootstrapping.Wpf.ReactiveUI
 
         private int Run(string[] args)
         {
+            Serilog.Log.Logger = CreateCoreLogger();
+
             var banner = new StringBuilder();
             banner.AppendLine(@" ______               __          __                                     ");
             banner.AppendLine(@"|   __ \.-----.-----.|  |_.-----.|  |_.----.---.-.-----.-----.-----.----.");
@@ -33,7 +36,7 @@ namespace Example.Bootstrapping.Wpf.ReactiveUI
             banner.AppendLine(@"                                                 |__|  |__|              ");
             banner.AppendLine(@"    ");
             var logging = new LoggingOrchestrator();
-            logging.InitializeLogging<ConsoleAndFileLogger>("Main", banner.ToString());
+            logging.InitializeLogging<SerilogAdapter>("Main", banner.ToString());
 
             var app = new App { ShutdownMode = ShutdownMode.OnLastWindowClose };
 
@@ -59,6 +62,22 @@ namespace Example.Bootstrapping.Wpf.ReactiveUI
         private void OnExit(object s, ExitEventArgs e)
         {
             s.Log().Info($"{_environment.GetProductName()} is exiting");
+        }
+
+        private ILogger CreateCoreLogger()
+        {
+            var programData = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+            var logPath = Path.Combine(programData, "Example.Bootstapping.Wpf.ReactiveUI", "app.log");
+
+            var logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .Enrich.WithThreadId()
+                .Enrich.FromLogContext()
+                .WriteTo.File(
+                    path: logPath,
+                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3} {ThreadId} {Properties}] {Message:lj}{NewLine}{Exception}")
+                .CreateLogger();
+            return logger;
         }
     }
 }
