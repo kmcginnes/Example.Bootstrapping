@@ -25,7 +25,7 @@ namespace Example.Bootstrapping
         /// <returns>Instance of a logger for the object.</returns>
         public static ILog Log<T>(this T type)
         {
-            string objectName = typeof(T).GetFriendlyName();
+            string objectName = type.GetType().GetFriendlyName();
             return Log(objectName);
         }
 
