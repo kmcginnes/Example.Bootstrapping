@@ -60,6 +60,7 @@ namespace Example.Bootstrapping.TopShelf
                         this.Log().Debug($"Interactive console mode detected.");
                         var commandProcessor = container.Resolve<ConsoleCommandOrchestrator>();
                         commandProcessor.StartUp();
+                        this.Log().Debug($"Console command orchestrator is now listening.");
                     }
                 });
         }
@@ -113,7 +114,7 @@ namespace Example.Bootstrapping.TopShelf
         {
             foreach (var disposable in _disposableBag)
             {
-                disposable.Log().Debug($"Disposing...");
+                disposable.Log().Trace($"Disposing...");
                 disposable.Dispose();
             }
         }
