@@ -22,7 +22,6 @@ namespace Example.Bootstrapping.TopShelf
 
         public void Start(string[] commandLineArgs)
         {
-            Log4NetConfig.Setup();
             var banner = new StringBuilder();
             banner.AppendLine(@" ______               __          __                                     ");
             banner.AppendLine(@"|   __ \.-----.-----.|  |_.-----.|  |_.----.---.-.-----.-----.-----.----.");

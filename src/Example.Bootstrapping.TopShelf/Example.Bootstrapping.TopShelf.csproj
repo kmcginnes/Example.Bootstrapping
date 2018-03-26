@@ -74,7 +74,6 @@
     <Compile Include="FindJobs\FindJobs.cs" />
     <Compile Include="FindJobs\FindJobsConsoleCommandProcessor.cs" />
     <Compile Include="FindJobs\FindJobsHandler.cs" />
-    <Compile Include="Log4NetConfig.cs" />
     <Compile Include="Log4NetLog.cs" />
     <Compile Include="LoggingBehavior.cs" />
     <Compile Include="Program.cs" />
@@ -84,6 +83,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="log4net.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
