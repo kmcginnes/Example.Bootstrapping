@@ -10,9 +10,9 @@ namespace Example.Bootstrapping.TopShelf
     [DebuggerDisplay("{_logger.Logger.Name}")]
     public class Log4NetLog : ILog
     {
-        private log4net.ILog _logger;
+        private readonly log4net.ILog _logger;
         
-        public void InitializeFor(string loggerName)
+        public Log4NetLog(Type loggerName)
         {
             _logger = LogManager.GetLogger(loggerName);
         }
