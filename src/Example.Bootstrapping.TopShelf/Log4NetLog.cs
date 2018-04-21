@@ -21,13 +21,7 @@ namespace Example.Bootstrapping.TopShelf
         {
             _logger.Logger.Log(typeof(Log4NetLog), level, message, exception?.Demystify());
         }
-
-        public void Log(Level level, Func<string> message, Exception exception = null)
-        {
-            if(_logger.Logger.IsEnabledFor(level))
-                _logger.Logger.Log(typeof(Log4NetLog), level, message(), exception);
-        }
-
+        
         [TargetedPatchingOptOut("Performance critical")] public void Trace(string message) => Log(Level.Trace, message);
         [TargetedPatchingOptOut("Performance critical")] public void Debug(string message) => Log(Level.Debug, message);
         [TargetedPatchingOptOut("Performance critical")] public void Info(string message) => Log(Level.Info, message);
