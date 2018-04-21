@@ -19,7 +19,7 @@ namespace Example.Bootstrapping.TopShelf
 
         public void Log(Level level, string message, Exception exception = null)
         {
-            _logger.Logger.Log(typeof(Log4NetLog), level, message, exception);
+            _logger.Logger.Log(typeof(Log4NetLog), level, message, exception?.Demystify());
         }
 
         public void Log(Level level, Func<string> message, Exception exception = null)
