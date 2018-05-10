@@ -11,7 +11,7 @@ namespace Example.Bootstrapping.TopShelf
                 cfg.Service<Bootstrapper>(s =>
                 {
                     s.ConstructUsing(() => new Bootstrapper());
-                    s.WhenStarted(x => x.Start(args));
+                    s.WhenStarted((bootstrapper, hostControl) => bootstrapper.Start(args, hostControl));
                     s.WhenStopped(x => x.Stop());
                 });
                 cfg.OnException(ex => GlobalExceptionHandlers.OnException(ex, "Windows service"));

@@ -13,6 +13,7 @@ using Castle.Windsor;
 using Castle.Windsor.Installer;
 using Castle.Windsor.Proxy;
 using Example.Bootstrapping.TopShelf.CastleWindsor;
+using Topshelf;
 
 namespace Example.Bootstrapping.TopShelf
 {
@@ -20,7 +21,7 @@ namespace Example.Bootstrapping.TopShelf
     {
         private readonly List<IDisposable> _disposableBag = new List<IDisposable>();
 
-        public void Start(string[] commandLineArgs)
+        public bool Start(string[] commandLineArgs, HostControl hostControl)
         {
             var banner = new StringBuilder();
             banner.AppendLine(@" ______               __          __                                     ");
@@ -41,7 +42,7 @@ namespace Example.Bootstrapping.TopShelf
             var appSettings = ConfigurationParser.Parse(commandLineArgs, ConfigurationManager.AppSettings);
             logging.LogUsefulInformation(environment, appSettings);
 
-            var container = InitializeContainer(appSettings);
+            var container = InitializeContainer(appSettings, hostControl);
             _disposableBag.Add(container);
 
             this.Log().Debug($"Finished bootstrapping {environment.GetProductName()}.");
@@ -63,9 +64,11 @@ namespace Example.Bootstrapping.TopShelf
                         this.Log().Debug($"Console command orchestrator is now listening.");
                     }
                 });
+
+            return true;
         }
 
-        private IWindsorContainer InitializeContainer(IAppSettings appSettings)
+        private IWindsorContainer InitializeContainer(IAppSettings appSettings, HostControl hostControl)
         {
             this.Log().Debug("Initializing the IoC container with Castle Windsor...");
 
@@ -73,6 +76,7 @@ namespace Example.Bootstrapping.TopShelf
 
             // Bootstrapper registrations
             container.Register(Component.For<IAppSettings>().Instance(appSettings));
+            container.Register(Component.For<HostControl>().Instance(hostControl));
 
             // Register all custom installers
             container.Install(FromAssembly.InThisApplication());
