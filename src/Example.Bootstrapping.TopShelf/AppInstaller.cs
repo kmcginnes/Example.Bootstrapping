@@ -7,6 +7,7 @@ using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using Example.Bootstrapping.TopShelf.CastleWindsor;
+using Example.Bootstrapping.TopShelf.FindJobs;
 using MediatR;
 
 namespace Example.Bootstrapping.TopShelf
@@ -15,11 +16,17 @@ namespace Example.Bootstrapping.TopShelf
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
+            // Register console commands
             container.Register(Component.For<ConsoleCommandOrchestrator>().LifestyleSingleton());
+            container.Register(Component.For<IConsoleCommandProcessor>().ImplementedBy<QuitTopShelfServiceCommandProcessor>());
+            container.Register(Component.For<IConsoleCommandProcessor>().ImplementedBy<FindJobsConsoleCommandProcessor>());
+            container.Register(Component.For<IConsoleCommandProcessor>().ImplementedBy<SweepKickoffConsoleCommandProcessor>());
+
+            // Register long running services
             container.Register(Component.For<LongRunningServiceOrchestrator>().LifestyleSingleton());
             container.Register(
                 Classes.FromAssemblyInThisApplication()
-                    .BasedOn(typeof(ILongRunningService), typeof(IConsoleCommandProcessor))
+                    .BasedOn(typeof(ILongRunningService))
                     .WithServiceAllInterfaces()
                     .LifestyleSingleton());
 
