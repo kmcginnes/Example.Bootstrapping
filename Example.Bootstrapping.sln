@@ -3,12 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26127.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Bootstrapping", "src\Example.Bootstrapping\Example.Bootstrapping.csproj", "{4DC7AEC8-A938-4BD3-B8CF-3C061177725A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Bootstrapping", "src\Example.Bootstrapping\Example.Bootstrapping.csproj", "{4DC7AEC8-A938-4BD3-B8CF-3C061177725A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Bootstrapping.Console", "src\Example.Bootstrapping.Console\Example.Bootstrapping.Console.csproj", "{09427FFC-10C9-41D1-AE14-F2EF20BBB794}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Bootstrapping.Console", "src\Example.Bootstrapping.Console\Example.Bootstrapping.Console.csproj", "{09427FFC-10C9-41D1-AE14-F2EF20BBB794}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{92D9D3AD-22E0-44C8-B247-D3A771D9D706}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
@@ -41,5 +42,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {208FEE81-16FC-4F60-8B16-2FD1150C7A68}
 	EndGlobalSection
 EndGlobal
