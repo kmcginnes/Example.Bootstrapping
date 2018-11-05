@@ -63,6 +63,8 @@
     <Compile Include="SerilogAdapter.cs" />
     <Compile Include="ShellViewModel.cs" />
     <Compile Include="ShellViewModelValidator.cs" />
+    <Compile Include="StackPanel.cs" />
+    <Compile Include="StackPanelFill.cs" />
     <Page Include="ShellView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
