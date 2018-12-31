@@ -1,5 +1,4 @@
-﻿using System.Reactive.Disposables;
-using System.Windows;
+﻿using System.Windows;
 using ReactiveUI;
 
 namespace Example.Bootstrapping.Wpf.ReactiveUI
@@ -12,14 +11,14 @@ namespace Example.Bootstrapping.Wpf.ReactiveUI
 
             this.WhenActivated(d =>
             {
-                //this.OneWayBind(ViewModel, vm => vm.Header, v => v.Header.Text).DisposeWith(d);
+                this.OneWayBind(ViewModel, vm => vm.Header, v => v.Header.Text).DisposeWith(d);
             });
         }
 
         public ShellViewModel ViewModel
         {
-            get { return (ShellViewModel) GetValue(ViewModelProperty); }
-            set { SetValue(ViewModelProperty, value); }
+            get => (ShellViewModel)GetValue(ViewModelProperty);
+            set => SetValue(ViewModelProperty, value);
         }
 
         public static readonly DependencyProperty ViewModelProperty =
@@ -27,8 +26,8 @@ namespace Example.Bootstrapping.Wpf.ReactiveUI
 
         object IViewFor.ViewModel
         {
-            get { return ViewModel; }
-            set { ViewModel = (ShellViewModel) value; }
+            get => ViewModel;
+            set => ViewModel = (ShellViewModel)value;
         }
     }
 }
