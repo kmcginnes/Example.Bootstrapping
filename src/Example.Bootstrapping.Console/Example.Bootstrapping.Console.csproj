@@ -14,9 +14,9 @@
     <Copyright>Copyright © 2018</Copyright>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="4.3.0" />
-    <PackageReference Include="MediatR" Version="3.0.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="Autofac" Version="4.8.1" />
+    <PackageReference Include="MediatR" Version="6.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Example.Bootstrapping\Example.Bootstrapping.csproj" />

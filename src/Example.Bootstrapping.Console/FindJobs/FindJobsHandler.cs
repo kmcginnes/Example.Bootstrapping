@@ -1,10 +1,11 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 
 namespace Example.Bootstrapping.Console.FindJobs
 {
-    public class FindJobsHandler : IAsyncRequestHandler<FindJobs>, IDisposable
+    public class FindJobsHandler : IRequestHandler<FindJobs>, IDisposable
     {
         private readonly DatabaseContext _context;
 
@@ -14,12 +15,14 @@ namespace Example.Bootstrapping.Console.FindJobs
             _context = context;
         }
 
-        public async Task Handle(FindJobs message)
+        public async Task<Unit> Handle(FindJobs request, CancellationToken cancellationToken)
         {
             this.Log().Debug($"{nameof(FindJobsHandler)}.Handle()");
 
             this.Log().Debug($"Doing some work to find jobs");
             await _context.QueryAsync();
+
+            return Unit.Value;
         }
 
         public void Dispose()

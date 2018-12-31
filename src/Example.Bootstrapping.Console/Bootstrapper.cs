@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac;
-using Autofac.Builder;
-using Autofac.Core;
-using Autofac.Features.ResolveAnything;
-using Autofac.Features.Variance;
 using Example.Bootstrapping.Logging;
 using MediatR;
 
@@ -62,9 +56,7 @@ namespace Example.Bootstrapping.Console
             // Don't use ContravariantRegistrationSource in AutoFac or it will create many closed generic types
             // for any of your open generic registrations (like LoggingBehavior<,> below).
             //builder.RegisterSource(new ContravariantRegistrationSource());
-
-            var hackToRegisterContainer = new Lazy<IContainer>(() => builder.Build());
-
+            
             builder.RegisterInstance(appSettings).AsImplementedInterfaces();
 
             builder.RegisterType<LongRunningServiceOrchestrator>().SingleInstance();
@@ -75,22 +67,22 @@ namespace Example.Bootstrapping.Console
                 .Where(t => t.IsAssignableTo<ILongRunningService>() || t.IsAssignableTo<IConsoleCommandProcessor>())
                 .AsImplementedInterfaces()
                 .SingleInstance();
-
-            builder.Register(c => hackToRegisterContainer.Value);
-
-            builder.Register(ctx => (Func<ILifetimeScope>)(() => hackToRegisterContainer.Value.BeginLifetimeScope()));
-            builder.RegisterType<ScopedMediator>().As<IMediator>();
-
-            builder.RegisterAssemblyTypes(assemblies).AsClosedTypesOf(typeof(IAsyncRequestHandler<>)).InstancePerLifetimeScope();
-            builder.RegisterAssemblyTypes(assemblies).AsClosedTypesOf(typeof(IAsyncRequestHandler<,>)).InstancePerLifetimeScope();
-            builder.RegisterAssemblyTypes(assemblies).AsClosedTypesOf(typeof(IRequestHandler<>)).InstancePerLifetimeScope();
-            builder.RegisterAssemblyTypes(assemblies).AsClosedTypesOf(typeof(IRequestHandler<,>)).InstancePerLifetimeScope();
-            builder.RegisterAssemblyTypes(assemblies).AsClosedTypesOf(typeof(IPipelineBehavior<,>)).InstancePerLifetimeScope();
+            
+            builder.Register<ServiceFactory>(context =>
+            {
+                var c = context.Resolve<IComponentContext>();
+                return t => c.Resolve(t);
+            });
+            builder.RegisterType<Mediator>().As<IMediator>().InstancePerLifetimeScope();
+            
+            builder.RegisterAssemblyTypes(assemblies).AsClosedTypesOf(typeof(IRequestHandler<>)).InstancePerDependency();
+            builder.RegisterAssemblyTypes(assemblies).AsClosedTypesOf(typeof(IRequestHandler<,>)).InstancePerDependency();
+            builder.RegisterAssemblyTypes(assemblies).AsClosedTypesOf(typeof(IPipelineBehavior<,>)).InstancePerDependency();
             
             // Must register because AutoFac does not know how to scan for these
-            builder.RegisterGeneric(typeof(LoggingBehavior<,>)).As(typeof(IPipelineBehavior<,>)).InstancePerLifetimeScope();
+            builder.RegisterGeneric(typeof(LoggingBehavior<,>)).As(typeof(IPipelineBehavior<,>)).InstancePerDependency();
 
-            var container = hackToRegisterContainer.Value;
+            var container = builder.Build();
             return container;
         }
     }

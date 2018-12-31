@@ -38,9 +38,7 @@ namespace Example.Bootstrapping.TopShelf
             
             container.Register(
                 Classes.FromAssemblyInThisApplication()
-                    .BasedOn(typeof(IAsyncRequestHandler<>))
-                    .OrBasedOn(typeof(IAsyncRequestHandler<,>))
-                    .OrBasedOn(typeof(IRequestHandler<>))
+                    .BasedOn(typeof(IRequestHandler<>))
                     .OrBasedOn(typeof(IRequestHandler<,>))
                     .OrBasedOn(typeof(IPipelineBehavior<,>))
                     .WithServiceAllInterfaces()

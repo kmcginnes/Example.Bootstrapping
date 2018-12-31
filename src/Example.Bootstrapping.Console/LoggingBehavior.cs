@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Newtonsoft.Json;
@@ -12,7 +13,7 @@ namespace Example.Bootstrapping.Console
             this.Log().Debug($"{nameof(LoggingBehavior<TRequest, TResponse>)}.ctor()");
         }
 
-        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next)
+        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
             this.Log().Debug($"{nameof(LoggingBehavior<TRequest, TResponse>)}.Handle()");
 
