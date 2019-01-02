@@ -59,7 +59,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="FormControl.cs" />
     <Compile Include="GlobalExceptionHandlers.cs" />
     <Compile Include="ReactiveExtensions.cs" />
     <Compile Include="SerilogAdapter.cs" />
